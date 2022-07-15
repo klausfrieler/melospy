@@ -1,0 +1,124 @@
+label: Contour Descriptors
+description: "Calculates various contour descriptors. First, Huron contour in three different varieties is supported: Code, Reduced Code and Numeric.
+Huron contour is calculated on a sequence of pitches by size comparison of the first pitch to the mean inner pitch (MIP, i.e., mean of MIDI pitches except the first and last element), 
+and the MIP to the last pitch. There are three possible relations between two numbers: Greater (>), equal (=), or less (<). Combining two comparisons gives a set of 
+nine different contour values: descending (>>), descending-horizontal (>=), concave (<>), horizontal-descending (=>), horizontal (==), horizontal-ascending (=<), convex (><), ascending-horizontal (<=), and ascending (<<). 
+Short mnemonic codes for them are ``desc``, ``desc-hor``, ``concave``, ``hor-desc``, ``hor``, ``hor-asc``, ``convex``, ``asc-hor``, ``asc``. The reduced code is a mapping of the 
+mixed-horizontal category to their non-horizontal partner, i.e., ``desc-hor`` and ``hor-desc``  become ``desc`` and ``asc-hor`` and ``hor-asc``  become ``asc``, which leaves 5 categories. 
+The numeric values range from -4 to 4 in the same order. (Cf. Huron (1994), `The Melodic Arch in Western Folksongs <http://www.musiccog.ohio-state.edu/Huron/Publications/huron.arch.text.html>`_.).
+Second, gradient countour measures the pitch gradient :math:`\\Delta p/\\Delta T` between extreme points. Third, Abesser contour is similar to Huron contour, but uses more stable estimators and is more suitable for longer sequences."
+category: Contour
+  
+feature:
+
+  source:
+    HURONCONTOUR_CODE:
+      param: huron-contour
+      optParam: code
+
+    HURONCONTOUR_RED:
+      param: huron-contour
+      optParam: redcode
+
+    HURONCONTOUR_NUM:
+      param: huron-contour
+      optParam: numeric
+
+    GRADIENT_CONTOUR:
+      param: gradient-contour
+      optParam: strict
+
+    ABESSERCONTOUR_CODE:
+      param: abesser-contour
+      optParam: code
+
+    ABESSERCONTOUR_RED:
+      param: abesser-contour
+      optParam: redcode
+
+    ABESSERCONTOUR_NUM:
+      param: abesser-contour
+      optParam: numeric
+      
+  process:
+
+    ID1:
+      type: id
+      inputVec: HURONCONTOUR_CODE.outputVec
+
+    ID2:
+      type: id
+      inputVec: HURONCONTOUR_RED.outputVec
+
+    ID3:
+      type: id
+      inputVec: HURONCONTOUR_NUM.outputVec
+
+    ID4:
+      type: id
+      inputVec: GRADIENT_CONTOUR.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: ID1.outputVec
+      label: huron_contour_code
+      doc:
+        type: String
+        length: 1
+        description: Huron contour codes. One of ``desc``, ``desc-hor``, ``concave``, ``hor-desc``, ``hor``, ``hor-asc``, ``convex``, ``asc-hor``, ``asc``.
+
+    F2:
+      type: sink
+      input: ID2.outputVec
+      label: huron_contour_redcode
+      doc:
+        type: String
+        length: 1
+        description: Reduced Huron contour codes. One of ``desc``, ``concave``, ``hor``, ``convex``, ``asc``.
+
+    F3:
+      type: sink
+      input: ID3.outputVec
+      label: huron_contour_num
+      doc:
+        type: Integer [-4:+4]
+        length: 1
+        description: Numeric value of Huron contour.
+
+    F4:
+      type: sink
+      input: ID4.outputVec
+      label: gradient_contour
+      doc:
+        type: Real
+        length: Var
+        description: List of gradients :math:`\Delta p/\Delta T` between extreme values of note track.
+
+    F5:
+      type: sink
+      input: ABESSERCONTOUR_CODE.outputVec
+      label: abesser_contour_code
+      doc:
+        type: String
+        length: 1
+        description: Abesser contour codes. One of ``desc``, ``desc-hor``, ``concave``, ``hor-desc``, ``hor``, ``hor-asc``, ``convex``, ``asc-hor``, ``asc``.
+
+    F6:
+      type: sink
+      input: ABESSERCONTOUR_RED.outputVec
+      label: abesser_contour_redcode
+      doc:
+        type: String
+        length: 1
+        description: Reduced Abesser contour codes. One of ``desc``, ``concave``, ``hor``, ``convex``, ``asc``.
+
+    F7:
+      type: sink
+      input: ABESSERCONTOUR_NUM.outputVec
+      label: abesser_contour_num
+      doc:
+        type: Integer [-4:+4]
+        length: 1
+        description: Numeric value for Abesser contour.

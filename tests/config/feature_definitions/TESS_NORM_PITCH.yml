@@ -1,0 +1,51 @@
+label: Tessitura Normalized Pitch
+description: Raw vector of scaled MIDI pitches with respect to pitch range.
+category: Pitch
+
+feature:
+
+  source:
+    PITCH:
+      param: pitch
+      
+  process:
+
+    MAX_P:
+      type: stat
+      measure: max
+      inputVec: PITCH.outputVec
+
+    MIN_P:
+      type: stat
+      measure: min
+      inputVec: PITCH.outputVec
+
+    NUMERATOR:
+      type: arithmetic
+      operator: "-"
+      inputVec1: PITCH.outputVec
+      inputVec2: MIN_P.outputVec
+
+    DENOMINATOR:
+      type: arithmetic
+      operator: "-"
+      inputVec1: MAX_P.outputVec
+      inputVec2: MIN_P.outputVec
+
+    SCALED:
+      type: arithmetic
+      operator: "/"
+      inputVec1: NUMERATOR.outputVec
+      inputVec2: DENOMINATOR.outputVec
+     
+  sink:
+
+    F1:
+      type: sink
+      input: SCALED.outputVec
+      label: tess_norm_pitch
+      doc:
+        type: Real [0, 1]
+        length: N
+        description: Tessatura-scaled pitch values.
+

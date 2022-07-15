@@ -1,0 +1,16 @@
+label: Pitch range
+description: Pitch range in semitones
+feature:
+  source:
+    PITCH:
+      param: pitch
+  process:
+    STAT: 
+      type: stat
+      measure: range
+      inputVec: PITCH.outputVec
+  sink:
+    F2: 
+      input: STAT.outputVec
+      label: pitch_range  
+      

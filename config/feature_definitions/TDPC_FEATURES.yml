@@ -1,0 +1,173 @@
+label: Tonal Diatonic Pitch Class Single Features
+description: Histogram counts of all 12 TDPC values (normalized to density), as well as basic circular statistics (cf. `<https://en.wikipedia.org/wiki/Directional_statistics>`_ ).
+category: Pitch
+
+feature:
+
+  source:
+    TDPC:
+      param: tonal-diatonic-pitch-class
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: nominal
+      density: True
+      sort: None
+      inputVec: TDPC.outputVec
+      fixed-bins: ['1', '2', '3', '4', '5', '6', '7', 'T', 'B', 'L', '<', '>']
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: TDPC.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      normalizeEntropy: True
+      inputVec: TDPC.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: TDPC.outputVec           
+      
+  sink:
+
+    F0:
+      type: sink
+      input: HIST.histVec
+      index: 0
+      label: tdpc_density_1
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC = '1'
+    F1:
+      type: sink
+      input: HIST.histVec
+      index: 1
+      label: tdpc_density_2
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC = '2'
+    F2:
+      type: sink
+      input: HIST.histVec
+      index: 2
+      label: tdpc_density_3
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  '3'
+    F3:
+      type: sink
+      input: HIST.histVec
+      index: 3
+      label: tdpc_density_4
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  '4'
+    F4:
+      type: sink
+      input: HIST.histVec
+      index: 4
+      label: tdpc_density_5
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  '5'
+    F5:
+      type: sink
+      input: HIST.histVec
+      index: 5
+      label: tdpc_density_6
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  '6'
+    F6:
+      type: sink
+      input: HIST.histVec
+      index: 6
+      label: tdpc_density_7
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  '7'
+    F7:
+      type: sink
+      input: HIST.histVec
+      index: 7
+      label: tdpc_density_T
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  'T'
+    F8:
+      type: sink
+      input: HIST.histVec
+      index: 8
+      label: tdpc_density_B
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  'B'
+    F9:
+      type: sink
+      input: HIST.histVec
+      index: 9
+      label: tdpc_density_L
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC = 'L'
+    F10:
+      type: sink
+      input: HIST.histVec
+      index: 10
+      label: tdpc_density_<
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  '<'
+    F11:
+      type: sink
+      input: HIST.histVec
+      index: 11
+      label: tdpc_density_>
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TDPC =  '>'
+    F12:
+      type: sink
+      input: MODE.outputVec
+      label: tdpc_mode
+      doc:
+        type: Real
+        length: Var
+        description: Mode of TDPC distribution (can be list!)
+
+    F13:
+      type: sink
+      input: ENTROPY.outputVec
+      label: tdpc_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Normalized entropy of TDPC distribution
+
+    F14:
+      type: sink
+      input: ZIPF.outputVec
+      label: tdpc_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of TDPC distribution
+            

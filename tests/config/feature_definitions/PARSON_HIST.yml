@@ -1,0 +1,48 @@
+label: Parson's Code Distribution ("Contour")
+description: "Histogram and raw vector of Parson's Code (contour). Values: **down** (-1), **repeat/unisone** (0), **up** (+1)"
+category: Interval
+
+feature:
+
+  source:
+    PARSONS:
+      param: parsons
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: -1
+      max: 1
+      density: False
+      inputVec: PARSONS.outputVec
+       
+  sink:
+
+    F1:
+      type: sink
+      input: PARSONS.outputVec
+      label: parsons_raw
+      doc:
+        type: Integer [-1:+1]
+        length: N
+        description: Raw output (Parson's code values of all melody notes)
+
+    F2:
+      type: sink
+      input: HIST.bins  
+      label: parsons_hist_values
+      doc:
+        type: Integer [-1:+1]
+        length: 3
+        description: Histogram bins for Parson's code
+
+    F3:
+      type: sink
+      input: HIST.histVec
+      label: parsons_hist_counts
+      doc:
+        type: Real
+        length: 3
+        description: Histogram bin counts (abs. frequencies)

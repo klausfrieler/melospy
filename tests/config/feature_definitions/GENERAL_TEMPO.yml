@@ -1,0 +1,154 @@
+label: Tempo Features
+description: Statistical descriptors of tempo distribution (mean, stddev, min, max, range) for  inter-beat intervals (IBI) measured in seconds or BPM counts (beats per minute). BPM=60/IBI
+category: Rhythm
+
+feature:
+  source:
+    BEATS:
+      param: beats
+
+  process:
+    IBI:
+      type: diff
+      inputVec: BEATS.outputVec
+
+    IBI_BPM:
+      type: arithmetic
+      inputVec1: 60.
+      inputVec2: IBI.outputVec
+      operator: "/"
+    
+    MEAN:
+      type: stat
+      measure: "mean"
+      inputVec: IBI.outputVec
+
+    STD:
+      type: stat
+      measure: "std"
+      inputVec: IBI.outputVec
+
+    RANGE:
+      type: stat
+      measure: "range"
+      inputVec: IBI.outputVec
+
+    MIN:
+      type: stat
+      measure: "min"
+      inputVec: IBI.outputVec
+
+    MAX:
+      type: stat
+      measure: "max"
+      inputVec: IBI.outputVec
+
+    MEAN_BPM:
+      type: stat
+      measure: "mean"
+      inputVec: IBI_BPM.outputVec
+
+    STD_BPM:
+      type: stat
+      measure: "std"
+      inputVec: IBI_BPM.outputVec
+
+    RANGE_BPM:
+      type: stat
+      measure: "range"
+      inputVec: IBI_BPM.outputVec
+
+    MIN_BPM:
+      type: stat
+      measure: "min"
+      inputVec: IBI_BPM.outputVec
+
+    MAX_BPM:
+      type: stat
+      measure: "max"
+      inputVec: IBI_BPM.outputVec
+
+
+  sink:
+#    F1:
+#      input: IBI.outputVec
+#      label: tempo_curve
+    F2:
+      input: MEAN.outputVec
+      label: mean_tempo
+      doc:
+        type: Real
+        length: 1
+        description: Mean tempo of a melody measured in seconds (average IBI).      
+    F3:
+      input: STD.outputVec
+      label: std_tempo
+      doc:
+        type: Real
+        length: 1
+        description: Standard devitation of IBI distribution in seconds.
+    F4:
+      input: RANGE.outputVec
+      label: ibi_range
+      doc:
+        type: Real
+        length: 1
+        description: Range of IBI distribution (max-min) in seconds.
+    F5:
+      input: MIN.outputVec
+      label: ibi_min
+      doc:
+        type: Real
+        length: 1
+        description: Minimum of IBI distribution (min) in seconds.
+    F6:
+      input: MAX.outputVec
+      label: ibi_max
+      doc:
+        type: Real
+        length: 1
+        description: Maximum of IBI distribution (max) in seconds.
+    F7:
+      input: MEAN_BPM.outputVec
+      label: mean_tempo_bpm
+      doc:
+        type: Real
+        length: 1
+        description: Mean tempo of a melody measured in BPM (beats per minute, BPM = 60/IBI).
+    F8:
+      input: STD_BPM.outputVec
+      label: std_tempo_bpm
+      doc:
+        type: Real
+        length: 1
+        description: Standard devitation of BPM distribution.
+    F9:
+      input: RANGE_BPM.outputVec
+      label: bpm_range
+      doc:
+        type: Real
+        length: 1
+        description: Range (max.min) of BPM distribution.
+
+    F10:
+      input: MIN_BPM.outputVec
+      label: bpm_min
+      doc:
+        type: Real
+        length: 1
+        description: Minimum of BPM distribution.
+    F11:
+      input: MAX_BPM.outputVec
+      label: bpm_max
+      doc:
+        type: Real
+        length: 1
+        description: Maximum of BPM distribution.
+    F12:
+      input: BEATS.outputVec
+      label: beat_track
+      doc:
+        type: Real
+        length: Var
+        description: Raw annotated beat positions.
+     

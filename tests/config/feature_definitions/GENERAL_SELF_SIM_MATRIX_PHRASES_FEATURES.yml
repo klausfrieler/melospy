@@ -1,0 +1,156 @@
+label: Self-similarity Features
+description: "Features derived from self similarity-matrix between phrases. These are basically statistical descriptors (*max, median, stddev, range, entropy*) either of the 
+set of adjacent or non-adjacent cells in the self-similarity matrix. For instance, a high median of adjacent cells could indicate developing variation, the same value for non-adjacent cells
+hints at long-range correlations, i.e. form thinking."
+category: Structure
+
+feature:
+  source:
+    PITCH:
+      param: chordal-pitch-class
+      optParam: keepNC
+    PHRASE_ID:
+      param: phrase-ids
+      
+  process:
+    # phrase-ids shall start with 0 for self-similarity matrix computation
+    PHRASE_ID_TO_ZERO:
+      type: arithmetic
+      inputVec1: PHRASE_ID.outputVec
+      inputVec2: 1
+      operator: "-"
+    # compute self-similarity matrix
+    SSM:
+      type: selfSimilarity 
+      inputVec: PITCH.outputVec
+      groupingVec: PHRASE_ID_TO_ZERO.outputVec
+    # 1) compute features from the similarity between adjacent phrases
+    UPPER_DIAG:
+      type: matrixToVector
+      inputVec: SSM.selfSimilarityMatrix
+      mode: diag
+      diagOffset: 1
+    UPPER_DIAG_STAT_MAX:
+      type: stat
+      measure: max  
+      inputVec: UPPER_DIAG.outputVec
+    UPPER_DIAG_STAT_MEDIAN:
+      type: stat
+      measure: median  
+      inputVec: UPPER_DIAG.outputVec
+    UPPER_DIAG_STAT_STD:
+      type: stat
+      measure: std  
+      inputVec: UPPER_DIAG.outputVec
+    UPPER_DIAG_STAT_RANGE:
+      type: stat
+      measure: range  
+      inputVec: UPPER_DIAG.outputVec
+    UPPER_DIAG_STAT_ENTROPY:
+      type: stat
+      measure: entropy_hist  
+      normalizeToDensity: True
+      normalizeEntropy: True
+      inputVec: UPPER_DIAG.outputVec
+
+    # 2) compute features from the similarity between all phrases of minimum distance 2
+    UPPER_TRI:
+      type: matrixToVector
+      inputVec: SSM.selfSimilarityMatrix
+      mode: upperTriangular
+      diagOffset: 2
+    UPPER_TRI_STAT_MEDIAN:
+      type: stat
+      measure: median  
+      inputVec: UPPER_TRI.outputVec
+    UPPER_TRI_STAT_MAX:
+      type: stat
+      measure: max  
+      inputVec: UPPER_TRI.outputVec
+    UPPER_TRI_STAT_STD:
+      type: stat
+      measure: std  
+      inputVec: UPPER_TRI.outputVec
+    UPPER_TRI_STAT_RANGE:
+      type: stat
+      measure: range  
+      inputVec: UPPER_TRI.outputVec
+    UPPER_TRI_STAT_ENTROPY:
+      type: stat
+      measure: entropy_hist  
+      normalizeToDensity: True
+      normalizeEntropy: True
+      inputVec: UPPER_TRI.outputVec
+  sink:
+    F0:
+      input: UPPER_DIAG_STAT_MAX.outputVec
+      label: adjacent_phrase_similarity_max
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Maximum of adjacent similarity values 
+    F1:
+      input: UPPER_DIAG_STAT_MEDIAN.outputVec
+      label: adjacent_phrase_similarity_median
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Median of adjacent similarity values 
+    F2:
+      input: UPPER_DIAG_STAT_STD.outputVec
+      label: adjacent_phrase_similarity_std
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Standard deviaation of adjacent similarity values
+    F3:
+      input: UPPER_DIAG_STAT_RANGE.outputVec
+      label: adjacent_phrase_similarity_range
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Range of adjacent similarity values 
+    F4:
+      input: UPPER_DIAG_STAT_ENTROPY.outputVec
+      label: adjacent_phrase_similarity_entropy
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Entropy of adjacent similarity values 
+    F6:
+      input: UPPER_TRI_STAT_MAX.outputVec
+      label: nonadjacent_phrase_similarity_max
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Maximum of non-adjacent similarity values 
+    F6:
+      input: UPPER_TRI_STAT_MEDIAN.outputVec
+      label: nonadjacent_phrase_similarity_median
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Median of non-adjacent similarity values 
+    F7:
+      input: UPPER_TRI_STAT_STD.outputVec
+      label: nonadjacent_phrase_similarity_std
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Standard deviation of non-adjacent similarity values 
+    F8:
+      input: UPPER_TRI_STAT_RANGE.outputVec
+      label: nonadjacent_phrase_similarity_range
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Range of non-adjacent similarity values 
+    F9:
+      input: UPPER_TRI_STAT_ENTROPY.outputVec
+      label: nonadjacent_phrase_similarity_entropy
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Maximum of adjacent similarity values 
+      
+      

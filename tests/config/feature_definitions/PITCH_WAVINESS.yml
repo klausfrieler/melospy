@@ -1,0 +1,68 @@
+label: Waviness/Zig-Zagity.
+description: "This feature set contains features related to (pitch-)extremal points in a melody. A local extremum (or turning) point can be either a minimum or maximum. Hence, pitches right before 
+and right after an extremal point are both lower or equal (maximum) or higher or equal (minimum). For this module only true extremal points are counted, where the pitches must be strictly 
+higher or lower to both sides. The percentage of extremal points can be regarded as a measure for zig-zagity (or waviness) of a melody. The extreme case are two alternatine pitches, where  
+each and every point is a local extremum resulting in an extrema ratio of 1."
+category: Contour
+
+feature:
+  source:
+    PITCH:
+      param: pitch
+  process:
+    MINIMA:
+      type: localExtrema
+      inputVec: PITCH.outputVec
+      mode: min
+
+    MAXIMA:
+      type: localExtrema
+      inputVec: PITCH.outputVec
+      mode: max
+
+    EXTREMA:
+      type: logic
+      inputVec1: MINIMA.outputVec
+      inputVec2: MAXIMA.outputVec
+      operator: or
+
+    NOTE_COUNT:
+      type: length
+      inputVec: PITCH.outputVec        
+
+    EXTREMA_COUNT:
+      type: sum
+      inputVec: EXTREMA.outputVec        
+
+    EXTREMA_RATIO:
+      type: arithmetic
+      inputVec1: EXTREMA_COUNT.outputVec        
+      inputVec2: NOTE_COUNT.outputVec        
+      operator: "/"
+
+  sink:
+    f1:
+      type: sink
+      input: EXTREMA_RATIO.outputVec
+      label: extrema_ratio
+      doc:
+        type: Real
+        length: 1
+        description: Percentage of extremal points 
+    f2:
+      type: sink
+      input: EXTREMA_COUNT.outputVec
+      label: extrema_count
+      doc:
+        type: Integer
+        description: Number of extremal points
+        length: 1
+    f3:
+      type: sink
+      input: NOTE_COUNT.outputVec
+      label: note_count
+      doc:
+        type: Integer
+        length: 1
+        description: Number of notes
+   

@@ -1,0 +1,91 @@
+label: Parson's Code Single Densities
+description: "Normalized histogram densities, mode, entropy  and Zipf coefficient for Parson's code. Values: **down** (-1), **repeat/unisone** (0), **up** (+1)"
+category: Interval
+
+feature:
+
+  source:
+    PARSONS:
+      param: parsons
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: -1
+      max: +1
+      density: True
+      inputVec: PARSONS.outputVec
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: PARSONS.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      numberClasses: 3
+      inputVec: PARSONS.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: PARSONS.outputVec           
+             
+  sink:
+
+    F0:
+      type: sink
+      input: HIST.histVec
+      index: 0
+      label: parsons_hist_descending
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency for **down** (-1)"
+    F1:
+      type: sink
+      input: HIST.histVec
+      index: 1
+      label: parsons_hist_constant
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency for **repeat** (0)"
+    F2:
+      type: sink
+      input: HIST.histVec
+      index: 2
+      label: parsons_hist_ascending
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency for **up** (+1)"
+    F3:
+      type: sink
+      input: MODE.outputVec
+      label: parsons_mode
+      doc:
+        type: Real
+        length: Var
+        description: Mode of Parson's Code distribution (can be list!)
+
+    F4:
+      type: sink
+      input: ENTROPY.outputVec
+      label: parsons_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Normalized entropy of Parson's Code distribution
+
+    F5:
+      type: sink
+      input: ZIPF.outputVec
+      label: parsons_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of Parson's Code distribution  

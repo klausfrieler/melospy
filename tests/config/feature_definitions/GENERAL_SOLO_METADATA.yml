@@ -1,0 +1,414 @@
+label: Solo Metadata
+description: Export all metadata for Jazzomat solos (currently only a subset)
+category: Metadata
+
+feature:
+  source:
+    PERFORMER:
+      param: meta.performer
+    TITLE:
+      param: meta.title
+    TITLEADDON:
+      param: meta.titleaddon
+    SOLOPART:
+      param: meta.solopart
+    FULLTITLE:
+      param: meta.fulltitle
+    INSTRUMENT:
+      param: meta.instrument
+    STYLE:
+      param: meta.style
+    AVGTEMPO:
+      param: meta.avgtempo
+    TEMPOCLASS:
+      param: meta.tempoclass
+    RHYTHMFEEL:
+      param: meta.rhythmfeel
+    KEY:
+      param: meta.key
+    FILENAMESV:
+      param: meta.filenamesv
+    STATUS:
+      param: meta.status
+    COMPOSER:
+      param: meta.composer
+    TONALITY:
+      param: meta.tonalitytype
+    GENRE:
+      param: meta.genre
+    FORM:
+      param: meta.form
+    SIGNATURE:
+      param: meta.signature
+    MBZID:
+      param: meta.musicbrainzid
+    RECORDINGDATE:
+      param: meta.recordingdate
+    RECORDINGYEAR:
+      param: meta.recordingyear
+    RECORDBIB:
+      param: meta.recordbib
+    RECORDTITLE:
+      param: meta.recordtitle
+    LABEL:
+      param: meta.label
+    SOLO_START:
+      param: meta.solostart
+    SOLO_END:
+      param: meta.soloend
+    SOLO_TIME:
+      param: meta.solotime
+    LINEUP:
+      param: meta.lineup
+    CHORD_CHANGES:
+      param: meta.chordchanges
+    CHORUS_COUNT:
+      param: meta.choruscount
+    HARMONY_TEMPLATE:
+      param: meta.harmonytemplate
+      
+  process:
+    ID1:
+      type: id
+      inputVec: PERFORMER.outputVec
+
+    ID2:
+      type: id
+      inputVec: TITLE.outputVec
+
+    ID3:
+      type: id
+      inputVec: TITLEADDON.outputVec
+
+    ID4:
+      type: id
+      inputVec: SOLOPART.outputVec
+
+    ID4a:
+      type: id
+      inputVec: FULLTITLE.outputVec
+
+    ID5:
+      type: id
+      inputVec: INSTRUMENT.outputVec
+
+    ID6:
+      type: id
+      inputVec: STYLE.outputVec
+
+    ID7:
+      type: id
+      inputVec: AVGTEMPO.outputVec
+
+    ID8:
+      type: id
+      inputVec: TEMPOCLASS.outputVec
+
+    ID9:
+      type: id
+      inputVec: RHYTHMFEEL.outputVec
+
+    ID10:
+      type: id
+      inputVec: KEY.outputVec
+
+    ID11:
+      type: id
+      inputVec: FILENAMESV.outputVec
+
+    ID12:
+      type: id
+      inputVec: STATUS.outputVec
+
+    ID13:
+      type: id
+      inputVec: COMPOSER.outputVec
+
+    ID14:
+      type: id
+      inputVec: TONALITY.outputVec
+
+    ID15:
+      type: id
+      inputVec: GENRE.outputVec
+
+    ID16:
+      type: id
+      inputVec: FORM.outputVec
+    ID17:
+      type: id
+      inputVec: SIGNATURE.outputVec
+    ID18:
+      type: id
+      inputVec: MBZID.outputVec
+    ID19:
+      type: id
+      inputVec: RECORDINGDATE.outputVec
+    ID19_1:
+      type: id
+      inputVec: RECORDINGYEAR.outputVec
+
+    ID20:
+      type: id
+      inputVec: RECORDBIB.outputVec
+    ID21:
+      type: id
+      inputVec: RECORDTITLE.outputVec
+    ID22:
+      type: id
+      inputVec: LABEL.outputVec
+
+    ID23:
+      type: id
+      inputVec: SOLO_START.outputVec
+    ID24:
+      type: id
+      inputVec: SOLO_END.outputVec
+    ID25:
+      type: id
+      inputVec: LINEUP.outputVec
+    ID26:
+      type: id
+      inputVec: CHORD_CHANGES.outputVec
+    ID27:
+      type: id
+      inputVec: CHORUS_COUNT.outputVec
+    ID28:
+      type: id
+      inputVec: HARMONY_TEMPLATE.outputVec
+    ID29:
+      type: id
+      inputVec: SOLO_TIME.outputVec
+
+  sink:
+    F1:
+      input: ID1.outputVec
+      label: performer
+      doc:
+        type: String
+        length: 1
+        description: Performer.
+    F2:
+      input: ID2.outputVec
+      label: title
+      doc:
+        type: String 
+        length: 1
+        description: Title.
+    F3:
+      input: ID3.outputVec
+      label: titleaddon
+      doc:
+        type: String
+        length: 1
+        description: Add-on for title.
+    F4:
+      input: ID4.outputVec
+      label: solopart
+      doc:
+        type: String
+        length: 1
+        description: Running number of a solo in a piece.
+    F4a:
+      input: ID4a.outputVec
+      label: full_title
+      doc:
+        type: String
+        length: 1
+        description: Full title (including solo part and title addon).
+
+    F5:
+      input: ID5.outputVec
+      label: instrument
+      doc:
+        type: String
+        length: 1
+        description: Instrument of the soloist. One of ``ts``, ``ts-c``, ``as``, ``bs``, ``bsx``, ``cbsx``, ``ss``, ``sss``, ``cl``, ``bcl``, ``acl``, ``tp``, ``tpt``, ``flgn``, ``tb``, ``fl``, ``cor``, ``ptp``, ``frhn``, ``ob``, ``voc``  or empty.
+
+
+    F6:
+      input: ID6.outputVec
+      label: style
+      doc:
+        type: String
+        length: 1
+        description: Style of piece. One of ``TRADITIONAL``, ``SWING``,  ``BEBOP``, ``COOL``, ``HARDBOP``, ``POSTBOP``, ``FREE``, ``FUSION``, ``OTHER``, ``MIX``  or empty.
+
+    F7:
+      input: ID7.outputVec
+      label: avgtempo
+      doc:
+        type: String
+        length: 1
+        description: Avg. Tempo (bpm)
+
+    F8:
+      input: ID8.outputVec
+      label: tempoclass
+      doc:
+        type: String
+        length: 1
+        description: Tempo class. One of ``SLOW``, ``MEDIUM SLOW``, ``MEDIUM``, ``MEDIUM UP``, ``UP`` or empty.
+ 
+
+    F9:
+      input: ID9.outputVec
+      label: rhythmfeel
+      doc:
+        type: String
+        length: 1
+        description: Basic rhythmic feel/groove style. One of ``TWOBEAT``, ``SWING``, ``BALLAD``, ``LATIN``, ``FUNK`` or empty.
+
+    F10:
+      input: ID10.outputVec
+      label: key
+      doc:
+        type: String
+        length: 1
+        description: Key or tonal center of the piece.
+
+    F11:
+      input: ID11.outputVec
+      label: filename_sv
+      doc:
+        type: String
+        length: 1
+        description: Filename of originating SV project file.
+
+    F12:
+      input: ID12.outputVec
+      label: status
+      doc:
+        type: String
+        length: 1
+        description: Status of transcription. One of ``PREFINAL``, ``FINAL``, ``DRAFT``, ``ASSIGNED`` or empty.
+
+    F13:
+      input: ID13.outputVec
+      label: composer
+      doc:
+        type: String
+        length: 1
+        description: Composer of the piece.
+
+    F14:
+      input: ID14.outputVec
+      label: tonality_type
+      doc:
+        type: String
+        length: 1
+        description: Tonality type of the composition. One of ``FUNCTIONAL``, ``MODAL``, ``COLOR``, ``FREE``, ``BLUES``, ``JAZZ-BLUES`` or empty.
+
+    F15:
+      input: ID15.outputVec
+      label: genre
+      doc:
+        type: String
+        length: 1
+        description: Genre of the composition. One of ``TRADITIONAL``, ``BLUES``, ``GREAT AMERICAN SONGBOOK``, ``WORMS``, ``ORIGINAL``, ``RIFF`` or empty.
+
+    F16:
+      input: ID16.outputVec
+      label: form
+      doc:
+        type: String
+        length: 1
+        description: Form of the composition. 
+    F17:
+      input: ID17.outputVec
+      label: signature
+      doc:
+        type: String
+        length: 1
+        description: Signature(s) of solo. 
+    F18:
+      input: ID18.outputVec
+      label: mbzid
+      doc:
+        type: String
+        length: 1
+        description: Music Brainz ID
+    F19:
+      input: ID19.outputVec
+      label: recordingdate
+      doc:
+        type: String
+        length: 1
+        description: Recording date(s) of containing record
+    F19_1:
+      input: ID19_1.outputVec
+      label: recordingyear
+      doc:
+        type: String
+        length: 1
+        description: Recording year of containing record
+    F20:
+      input: ID20.outputVec
+      label: recordbib
+      doc:
+        type: String
+        length: 1
+        description: Bibliography of record. 
+    F21:
+      input: ID21.outputVec
+      label: recordtitle
+      doc:
+        type: String
+        length: 1
+        description: Title of containing record
+    F22:
+      input: ID22.outputVec
+      label: label
+      doc:
+        type: String
+        length: 1
+        description: Record label of containing record 
+    F23:
+      input: ID23.outputVec
+      label: solostart
+      doc:
+        type: String
+        length: 1
+        description: Start time of solo in full track.
+    F24:
+      input: ID24.outputVec
+      label: soloend
+      doc:
+        type: String
+        length: 1
+        description: End time of solo in full track.
+    F25:
+      input: ID25.outputVec
+      label: lineup
+      doc:
+        type: String
+        length: 1
+        description: Line-up of track.
+    F26:
+      input: ID26.outputVec
+      label: chord_changes
+      doc:
+        type: String
+        length: 1
+        description: Chord changes as compact string.        
+    F27:
+      input: ID27.outputVec
+      label: chorus_count
+      doc:
+        type: String
+        length: 1
+        description: Number of full choruses in the solo.                
+    F28:
+      input: ID28.outputVec
+      label: harmony_template
+      doc:
+        type: String
+        length: 1
+        description: Underlying harmony template of composition.
+    F29:
+      input: ID29.outputVec
+      label: solo_time
+      doc:
+        type: String
+        length: 1
+        description: Start/End of solo in surrounding track

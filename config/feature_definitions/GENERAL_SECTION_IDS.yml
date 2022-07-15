@@ -1,0 +1,95 @@
+label: Sections IDs and Labels
+description: Returns sequences of raw phrase IDs, form labels, chorus IDs, chord labels and chord types 
+category: Auxiliary
+
+feature:
+
+  source:
+    PHRASE_ID:
+      param: phrase-ids
+    CHORUS_ID:
+      param: chorus-ids
+    FORM_LABELS:
+      param: form-labels
+    CHORDS:
+      param: chord-events
+    CHORDTYPES:
+      param: chord-types
+    CHORDTYPES_SECTION:
+      param: chord-symbols
+      optParam: types
+      
+  process:
+
+    ID1:
+      type: id
+      inputVec: PHRASE_ID.outputVec
+    ID2:
+      type: id
+      inputVec: CHORUS_ID.outputVec
+    ID3:
+      type: id
+      inputVec: FORM_LABELS.outputVec
+    ID4:
+      type: id
+      inputVec: CHORDS.outputVec
+    ID5:
+      type: id
+      inputVec: CHORDTYPES.outputVec
+    ID6:
+      type: id
+      inputVec: CHORDTYPES_SECTION.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: ID1.outputVec
+      label: phrase_id_raw
+      doc:
+        type: Integer
+        length: ":math:`N_P`"
+        description: Sequence of event-wise phrase IDs.
+
+    F2:
+      type: sink
+      input: ID2.outputVec
+      label: chorus_id_raw
+      doc:
+        type: Integer
+        length: Var
+        description: Sequence of event-wise chorus IDs.
+    F3:
+      type: sink
+      input: ID3.outputVec
+      label: form_labels_raw
+      doc:
+        type: Integer
+        length: Var
+        description: Sequence of event-wise form labels (as annotated).
+    F4:
+      type: sink
+      input: ID4.outputVec
+      label: chords_raw
+      doc:
+        type: Integer
+        length: Var
+        description: Sequence of event-wise chord symbols (as annotated and normalized).
+    F5:
+      type: sink
+      input: ID5.outputVec
+      label: chord_types_raw
+      doc:
+        type: Integer
+        length: Var
+        description: Sequence of event-wise chord type labels (triad type + seventh).
+
+    F6:
+      type: sink
+      input: ID6.outputVec
+      label: chord_types_sections
+      doc:
+        type: Integer
+        length: Var
+        description: Type labels for chord sections (triad type + seventh).
+

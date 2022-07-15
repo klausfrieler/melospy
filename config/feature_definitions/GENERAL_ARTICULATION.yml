@@ -1,0 +1,194 @@
+label: Articulation
+description: "Articulation of notes as measured by the ratio of duration and inter-onset interval. (Be careful at phrase endings, though). 
+The higher the ratio, the more legato, the lower the ratio, the more staccato."
+category: Tone Formation
+
+feature:
+  source:
+    IOI:
+      param: ioi
+
+    DURATION:
+      param: duration
+      
+  process:
+    ID1:
+      type: id
+      inputVec: IOI.outputVec
+    ID2:
+      type: id
+      inputVec: DURATION.outputVec
+
+    DUR_TRUNC:
+      type: truncate
+      mode: back
+      value: 1
+      inputVec: DURATION.outputVec
+
+    DUR_IOI_RATIO:
+      type: arithmetic
+      operator: "/"
+      inputVec1: DUR_TRUNC.outputVec
+      inputVec2: IOI.outputVec
+
+    ARTICULATION:
+      type: limiter
+      min: 0
+      max: 1
+      inputVec: DUR_IOI_RATIO.outputVec
+
+    
+    MEAN:
+      type: stat 
+      measure: mean
+      inputVec: ARTICULATION.outputVec           
+
+    MEDIAN:
+      type: stat
+      measure: median
+      inputVec: ARTICULATION.outputVec           
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: ARTICULATION.outputVec           
+
+    VAR:
+      type: stat
+      measure: var
+      inputVec: ARTICULATION.outputVec           
+
+    STD:
+      type: stat
+      measure: std
+      inputVec: ARTICULATION.outputVec           
+
+    MAX:
+      type: stat
+      measure: max
+      inputVec: ARTICULATION.outputVec           
+
+    MIN:
+      type: stat
+      measure: min
+      inputVec: ARTICULATION.outputVec           
+
+    RANGE:
+      type: stat
+      measure: range
+      inputVec: ARTICULATION.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: ARTICULATION.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      inputVec: ARTICULATION.outputVec           
+      
+  sink:
+    F1:
+      input: ID1.outputVec
+      label: ioi_raw
+      doc:
+        type: Real
+        length: N-1
+        description: Raw interonset-interval values.
+    F2:
+      input: ID2.outputVec
+      label: duration_raw
+      doc:
+        type: Real
+        length: N
+        description: Raw durations.
+    F3:
+      input: ARTICULATION.outputVec
+      label: articulation_raw
+      doc:
+        type: Real
+        length: N-1
+        description: Ratios of durations to interonset-intervals.
+    F4:
+      type: sink
+      input: MEAN.outputVec
+      label: art_mean
+      doc:
+        type: Real
+        length: 1
+        description: Mean of articulation distribution
+    F5:
+      type: sink
+      input: MEDIAN.outputVec
+      label: art_median
+      doc:
+        type: Real
+        length: 1
+        description: Median of articulation distribution
+    F6:
+      type: sink
+      input: VAR.outputVec
+      label: art_var
+      doc:
+        type: Real
+        length: 1
+        description: Variance of of articulation distribution
+    F7:
+      type: sink
+      input: STD.outputVec
+      label: art_std
+      doc:
+        type: Real
+        length: 1
+        description: Standard deviation of articulation distribution
+    F8:
+      type: sink
+      input: MIN.outputVec
+      label: art_min
+      doc:
+        type: Real
+        length: 1
+        description: Minimum of of articulation distribution
+    F9:
+      type: sink
+      input: MAX.outputVec
+      label: art_max
+      doc:
+        type: Real
+        length: 1
+        description: Maximum of of articulation distribution
+    F10:
+      type: sink
+      input: RANGE.outputVec
+      label: art_range
+      doc:
+        type: Real
+        length: 1
+        description: Range of of articulation distribution
+#    F11:
+#      type: sink
+#      input: MODE.outputVec
+#      label: art_mode
+#      doc:
+#        type: Real
+#        length: Var
+#        description: Mode of articulation distribution (can be list!)
+#    F12:
+#      type: sink
+#      input: ZIPF.outputVec
+#      label: art_zipf
+#      doc:
+#        type: Real
+#        length: 1
+#        description: Zipf coefficient of articulation distribution.
+#    F13:
+#      type: sink
+#      input: ENTROPY.outputVec
+#      label: art_entropy
+#      doc:
+#        type: Real
+#        length: 1
+#        description: Entropy of articulation distribution (bits)
+
+      

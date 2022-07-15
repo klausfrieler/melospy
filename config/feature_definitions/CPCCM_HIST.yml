@@ -1,0 +1,73 @@
+label: Chordal Pitch Class Circle Map Features (Experimental)
+description: "Histogram for Chordal Pitch Class Circle Map (N=12) unigrams and bigrams (occurence and transition probabilites)"
+category: Pitch
+
+feature:
+
+  source:
+    CPC:
+      param: cpc
+      
+  process:
+
+    UNIGRAM:
+      type: id
+      inputVec: CPC.outputVec
+
+    BIGRAM:
+      type: ngram
+      N: 2
+      inputVec: CPC.outputVec
+
+    UNIGRAMHIST:
+      type: hist
+      histogramType: ordinal
+      min: 0
+      max: 11
+      density: True
+      inputVec: UNIGRAM.outputVec
+
+    BIGRAMHIST:
+      type: hist
+      histogramType: nominal
+      density: True
+      inputVec: BIGRAM.outputVec
+
+
+  sink:
+
+    F1:
+      type: sink
+      input: UNIGRAMHIST.bins
+      label: cpccm_unigram_values
+      doc:
+        type: Array  of Integer [0:11]
+        length: 12
+        description: Histogram bins (CPCCM:12 values)
+
+    F2:
+      type: sink
+      input: UNIGRAMHIST.histVec
+      label: cpccm_unigram_freqs
+      doc:
+        type: Real [0,1]
+        length: 12
+        description: Histogram bin densities (CPCCM:12 values)
+
+    F3:
+      type: sink
+      input: BIGRAMHIST.bins
+      label: cpccm_bigram_values
+      doc:
+        type: Array  of Integer
+        length: Var
+        description: Histogram bins (all unique CPCCM bigrams)
+
+    F4:
+      type: sink
+      input: BIGRAMHIST.histVec
+      label: cpccm_bigram_freqs
+      doc:
+        type: Real [0,1]
+        length: Var
+        description: Histogram bin densities (all unique CPCCM bigrams)

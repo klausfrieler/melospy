@@ -1,0 +1,49 @@
+label: Pitch Class Distribution
+description: Histogram and raw vector of pitch classes
+category: Pitch
+
+feature:
+
+  source:
+    PC:
+      param: pitchclass
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: 0
+      max: 11
+      density: False
+      inputVec: PC.outputVec
+       
+  sink:
+
+    F1:
+      type: sink
+      input: PC.outputVec
+      label: pc_raw
+      doc:
+        type: Integer [0:11]
+        length: N
+        description: Raw output (values for all melody notes)
+
+    F2:
+      type: sink
+      input: HIST.bins  
+      label: pc_hist_values
+      doc:
+        type: Integer [0:11]
+        length: 12
+        description: Histogram bins
+
+    F3:
+      type: sink
+      input: HIST.histVec
+      label: pc_hist_dens
+      doc:
+        type: Real
+        length: 12
+        description: Histogram bin count (abs. frequencies)
+

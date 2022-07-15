@@ -1,0 +1,89 @@
+label: Duration Class Distribution
+description: "Histogram and raw vector of duration classes (**very short**: -2, **short**: -1, **medium**: 0, **long**: 1, **very long**: 2). 
+Reference duration is either local beat duration ('relative mode') or 0.5 sec ('absolute mode')"
+category: Rhythm
+
+feature:
+
+  source:
+    DURCLASS_ABS:
+      param: durclass
+      optParam: abs
+
+    DURCLASS_REL:
+      param: durclass
+      optParam: rel
+      
+  process:
+
+    HIST_ABS:
+      type: hist
+      histogramType: ordinal
+      min: -2
+      max: 2
+      density: False
+      inputVec: DURCLASS_ABS.outputVec
+
+    HIST_REL:
+      type: hist
+      histogramType: ordinal
+      min: -2
+      max: 2
+      density: False
+      inputVec: DURCLASS_REL.outputVec
+       
+  sink:
+
+    F1:
+      type: sink
+      input: DURCLASS_ABS.outputVec
+      label: durclass_abs_raw
+      doc:
+        type: Integer
+        length: N
+        description: Raw output of duration classes (absolute mode) 
+
+    F2:
+      type: sink
+      input: HIST_ABS.bins  
+      label: durclass_abs_hist_values
+      doc:
+        type: Integer [-2:2]
+        length: 5
+        description: Histogram bin values (absolute mode)
+
+    F3:
+      type: sink
+      input: HIST_ABS.histVec
+      label: durclass_abs_hist_counts
+      doc:
+        type: Integer
+        length: 5
+        description: Histogram bin counts (abs. frequencies, absolute mode)
+
+    F4:
+      type: sink
+      input: DURCLASS_REL.outputVec
+      label: durclass_rel_raw
+      doc:
+        type: Integer
+        length: N
+        description: Raw output of duration classes (relative mode) 
+
+    F5:
+      type: sink
+      input: HIST_REL.bins  
+      label: durclass_rel_hist_values
+      doc:
+        type: Integer [-2:2]
+        length: 5
+        description: Histogram bin values (relative mode)
+
+    F6:
+      type: sink
+      input: HIST_REL.histVec
+      label: durclass_rel_hist_counts
+      doc:
+        type: Integer
+        length: 5
+        description: Histogram bin counts (abs. frequencies, relative mode)

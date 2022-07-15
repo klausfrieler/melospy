@@ -1,0 +1,246 @@
+label: Chordal Pitch Class Feature
+description: Normalized histogram count, and basic circular statistics (cf. `<https://en.wikipedia.org/wiki/Directional_statistics>`_ ) of CPC distribution.
+category: Pitch
+
+
+feature:
+
+  source:
+    CPC:
+      param: chordal-pitch-class
+      optParam: filterNC
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: 0
+      max: 11
+      density: True
+      inputVec: CPC.outputVec
+
+    CIRC_MEAN_ANGLE:
+      type: stat 
+      measure: circ_mean_angle
+      circ_max: 12
+      inputVec: CPC.outputVec           
+
+    CIRC_MEAN_LENGTH:
+      type: stat
+      measure: circ_mean_length
+      circ_max: 12
+      inputVec: CPC.outputVec           
+
+    CIRC_VAR:
+      type: stat
+      measure: circ_var
+      circ_max: 12
+      inputVec: CPC.outputVec           
+
+    CIRC_STD:
+      type: stat
+      measure: circ_std
+      circ_max: 12
+      inputVec: CPC.outputVec           
+
+    CIRC_DISP:
+      type: stat
+      measure: circ_disp
+      circ_max: 12
+      inputVec: CPC.outputVec           
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: CPC.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: CPC.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      numberClasses: 12
+      inputVec: CPC.outputVec           
+    
+  sink:
+
+    F0:
+      type: sink
+      input: HIST.histVec
+      index: 0
+      label: cpc_hist_density_00
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 0
+    F1:
+      type: sink
+      input: HIST.histVec
+      index: 1
+      label: cpc_hist_density_01
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 1
+    F2:
+      type: sink
+      input: HIST.histVec
+      index: 2
+      label: cpc_hist_density_02
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 2
+    F3:
+      type: sink
+      input: HIST.histVec
+      index: 3
+      label: cpc_hist_density_03
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 3
+    F4:
+      type: sink
+      input: HIST.histVec
+      index: 4
+      label: cpc_hist_density_04
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 4
+    F5:
+      type: sink
+      input: HIST.histVec
+      index: 5
+      label: cpc_hist_density_05
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 5
+    F6:
+      type: sink
+      input: HIST.histVec
+      index: 6
+      label: cpc_hist_density_06
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 6
+    F7:
+      type: sink
+      input: HIST.histVec
+      index: 7
+      label: cpc_hist_density_07
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 7
+    F8:
+      type: sink
+      input: HIST.histVec
+      index: 8
+      label: cpc_hist_density_08
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 8
+    F9:
+      type: sink
+      input: HIST.histVec
+      index: 9
+      label: cpc_hist_density_09
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 9
+    F10:
+      type: sink
+      input: HIST.histVec
+      index: 10
+      label: cpc_hist_density_10
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 10
+    F11:
+      type: sink
+      input: HIST.histVec
+      index: 11
+      label: cpc_hist_density_11
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CPC = 11
+
+    F12:
+      type: sink
+      input: CIRC_MEAN_ANGLE.outputVec
+      label: cpc_circ_mean_angle
+      doc:
+        type: Real
+        length: 1
+        description: Angle of circular mean of CPC distribution
+    F13:
+      type: sink
+      input: CIRC_MEAN_LENGTH.outputVec
+      label: cpc_circ_mean_length
+      doc:
+        type: Real
+        length: 1
+        description: Length of circular mean of CPC distribution
+    F14:
+      type: sink
+      input: CIRC_VAR.outputVec
+      label: cpc_circ_var
+      doc:
+        type: Real
+        length: 1
+        description: Circular variance of CPC distribution (=1-length of circular mean)
+    F15:
+      type: sink
+      input: CIRC_STD.outputVec
+      label: cpc_circ_std
+      doc:
+        type: Real
+        length: 1
+        description: Circular standard deviation of CPC distribution
+    F16:
+      type: sink
+      input: CIRC_DISP.outputVec
+      label: cpc_circ_disp
+      doc:
+        type: Real
+        length: 1
+        description: Circular dispersion of CPC distribution
+    F17:
+      type: sink
+      input: MODE.outputVec
+      label: cpc_mode
+      doc:
+        type: Real
+        length: Var
+        description: Mode of CPC distribution (can be list!)
+
+    F17:
+      type: sink
+      input: ZIPF.outputVec
+      label: cpc_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of CPC distribution 
+
+    F18:
+      type: sink
+      input: ENTROPY.outputVec
+      label: cpc_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Normalized entropy of CPC distribution 
+    

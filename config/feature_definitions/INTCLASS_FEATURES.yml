@@ -1,0 +1,229 @@
+label: Interval Class Single Features
+description: "Normalized histogram count, and basic statistics  of interval class distribution. 
+Interval classes are minimal differences between pitches classes (i.e., length of shortest path on the circle) and have values from 0 to 6."
+category: Interval
+
+feature:
+
+  source:
+    PITCH:
+      param: pitch
+            
+  process:
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+
+    IC:
+      type: mod      
+      N: 12
+      circDist: True
+      inputVec: DIFF.outputVec
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: 0
+      max: +6
+      density: True
+      inputVec: IC.outputVec
+
+    MEAN:
+      type: stat 
+      measure: mean
+      inputVec: IC.outputVec           
+
+    MEDIAN:
+      type: stat
+      measure: median
+      inputVec: IC.outputVec           
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: IC.outputVec           
+
+    VAR:
+      type: stat
+      measure: var
+      inputVec: IC.outputVec           
+
+    STD:
+      type: stat
+      measure: std
+      inputVec: IC.outputVec           
+
+    MAX:
+      type: stat
+      measure: max
+      inputVec: IC.outputVec           
+
+    MIN:
+      type: stat
+      measure: min
+      inputVec: IC.outputVec           
+
+    RANGE:
+      type: stat
+      measure: range
+      inputVec: IC.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: IC.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      numberClasses: 7
+      inputVec: IC.outputVec           
+
+    
+  sink:
+
+    F0:
+      type: sink
+      input: MEAN.outputVec
+      label: ic_mean
+      doc:
+        type: Real
+        length: 1
+        description: Mean of interval class distribution
+    F1:
+      type: sink
+      input: MEDIAN.outputVec
+      label: ic_median
+      doc:
+        type: Real
+        length: 1
+        description: Median of interval class distribution
+    F2:
+      type: sink
+      input: VAR.outputVec
+      label: ic_var
+      doc:
+        type: Real
+        length: 1
+        description: Variance of of interval class distribution
+    F3:
+      type: sink
+      input: STD.outputVec
+      label: ic_std
+      doc:
+        type: Real
+        length: 1
+        description: Standard deviation of interval class distribution
+    F4:
+      type: sink
+      input: MIN.outputVec
+      label: ic_min
+      doc:
+        type: Real
+        length: 1
+        description: Minimum of of interval class distribution
+    F5:
+      type: sink
+      input: MAX.outputVec
+      label: ic_max
+      doc:
+        type: Real
+        length: 1
+        description: Maximum of of interval class distribution
+    F6:
+      type: sink
+      input: RANGE.outputVec
+      label: ic_range
+      doc:
+        type: Real
+        length: 1
+        description: Range of of interval class distribution
+    F7:
+      type: sink
+      input: MODE.outputVec
+      label: ic_mode
+      doc:
+        type: Real
+        length: Var
+        description: Mode of interval class distribution (can be list!)
+    F8:
+      type: sink
+      input: ZIPF.outputVec
+      label: ic_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of interval class distribution.
+    F9:
+      type: sink
+      input: ENTROPY.outputVec
+      label: ic_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Entropy of interval class distribution (bits)
+
+    F10:
+      type: sink
+      input: HIST.histVec
+      index: 0
+      label: ic_hist_density_0
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency IC = 0
+    F11:
+      type: sink
+      input: HIST.histVec
+      index: 1
+      label: ic_hist_density_1
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency IC = 1
+    F12:
+      type: sink
+      input: HIST.histVec
+      index: 2
+      label: ic_hist_density_2
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency IC = 2
+    F13:
+      type: sink
+      input: HIST.histVec
+      index: 3
+      label: ic_hist_density_3
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency IC = 3
+    F14:
+      type: sink
+      input: HIST.histVec
+      index: 4
+      label: ic_hist_density_4
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency IC = 4
+    F15:
+      type: sink
+      input: HIST.histVec
+      index: 5
+      label: ic_hist_density_5
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency IC = 5
+    F16:
+      type: sink
+      input: HIST.histVec
+      index: 6
+      label: ic_hist_density_6
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency IC = 6
+      

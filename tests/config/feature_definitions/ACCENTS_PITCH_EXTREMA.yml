@@ -1,0 +1,60 @@
+label: Pitch extrema accents
+description: "Extreme pitch values (maxima and minima) are likely positions to stand out from the context. Some variations in operationalisation are possible (e.g., with respect to 
+cambiatas and trillers)."
+category: Accents
+
+feature:
+  source:
+    ACCENT_PEXTREM:
+      param: accent
+      optParam: pextrem
+
+    ACCENT_PEXTRMF:
+      param: accent
+      optParam: pextrmf
+
+    ACCENT_PEXTRST:
+      param: accent
+      optParam: pextrst
+
+  process:
+    PEXTREM:
+      type: id
+      inputVec: ACCENT_PEXTREM.outputVec
+
+    PEXTRMF:
+      type: id
+      inputVec: ACCENT_PEXTRMF.outputVec
+
+    PEXTRST:
+      type: id
+      inputVec: ACCENT_PEXTRST.outputVec
+             
+  sink:
+    f1:
+      type: sink
+      input: PEXTREM.outputVec
+      label: pextrem
+      doc:
+        type: Real [0,1]        
+        length: N
+        description: Raw accent vector of pitch extrema (no restrictions).
+
+    f2:
+      type: sink
+      input: PEXTRMF.outputVec
+      label: pextrmf
+      doc:
+        type: Real [0,1]        
+        length: Var
+        description: Raw accent vector of pitch extrema (excluding proper cambiata).
+        
+    f3:
+      type: sink
+      input: PEXTRST.outputVec
+      label: pextrst
+      doc:
+        type: Real [0,1]        
+        length: N
+        description: Raw accent vector of pitch extrema (sensu Steinbeck, with at least two intervals before and after the extrema leading strictly to it).
+   

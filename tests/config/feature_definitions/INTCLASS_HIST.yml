@@ -1,0 +1,72 @@
+label: Interval Class Distribution
+description: "Histogram and raw vector of intervals classes. Interval classes are minimal differences between pitches classes (i.e., length of shortest path on the circle) and 
+have values from 0 to 6."
+category: Interval
+
+feature:
+
+  source:
+    PITCH:
+      param: pitch
+      
+  process:
+
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+
+    IC:
+      type: mod
+      N: 12
+      circDist: True
+      inputVec: DIFF.outputVec
+
+    APPEND:
+      type: append
+      inputVec: IC.outputVec
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: 0
+      max: +6
+      density: False
+      inputVec: IC.outputVec
+       
+  sink:
+
+    F1:
+      type: sink
+      input: IC.outputVec
+      label: ic_raw
+      doc:
+        type: Integer [0:+6]
+        length: N-1
+        description: List of interval classes
+
+    F2:
+      type: sink
+      input: HIST.bins  
+      label: ic_hist_values
+      doc:
+        type: Integer [0:6]
+        length: 7
+        description: Bins of Interval classes [0:6]
+
+    F3:
+      type: sink
+      input: HIST.histVec
+      label: ic_hist_counts
+      doc:
+        type: Integer
+        length: 7
+        description: Absolute frequencies of interval classes
+
+    F4:
+      type: sink
+      input: APPEND.outputVec
+      label: ic_raw_pad
+      doc:
+        type: Integer [0:+6]
+        length: N
+        description: List of interval classes with appended 0

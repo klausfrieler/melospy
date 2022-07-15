@@ -1,0 +1,145 @@
+label: Pitch Features
+description: Calculates set of basic statistical sample descriptors (mean, median, mode, min, max, range, var, std).
+category: Pitch
+
+feature:
+
+  source:
+    PITCH:
+      param: pitch
+            
+  process:
+    MEAN:
+      type: stat 
+      measure: mean
+      inputVec: PITCH.outputVec           
+
+    MEDIAN:
+      type: stat
+      measure: median
+      inputVec: PITCH.outputVec           
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: PITCH.outputVec           
+
+    VAR:
+      type: stat
+      measure: var
+      inputVec: PITCH.outputVec           
+
+    STD:
+      type: stat
+      measure: std
+      inputVec: PITCH.outputVec           
+
+    MAX:
+      type: stat
+      measure: max
+      inputVec: PITCH.outputVec           
+
+    MIN:
+      type: stat
+      measure: min
+      inputVec: PITCH.outputVec           
+
+    RANGE:
+      type: stat
+      measure: range
+      inputVec: PITCH.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: PITCH.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      inputVec: PITCH.outputVec           
+    
+
+  sink:
+
+    F0:
+      type: sink
+      input: MEAN.outputVec
+      label: pitch_mean
+      doc:
+        type: Real
+        length: 1
+        description: Mean of PITCH distribution
+    F1:
+      type: sink
+      input: MEDIAN.outputVec
+      label: pitch_median
+      doc:
+        type: Real
+        length: 1
+        description: Median of PITCH distribution
+    F2:
+      type: sink
+      input: VAR.outputVec
+      label: pitch_var
+      doc:
+        type: Real
+        length: 1
+        description: Variance of of PITCH distribution
+    F3:
+      type: sink
+      input: STD.outputVec
+      label: pitch_std
+      doc:
+        type: Real
+        length: 1
+        description: Standard deviation of PITCH distribution
+    F4:
+      type: sink
+      input: MIN.outputVec
+      label: pitch_min
+      doc:
+        type: Real
+        length: 1
+        description: Minimum of of PITCH distribution
+    F5:
+      type: sink
+      input: MAX.outputVec
+      label: pitch_max
+      doc:
+        type: Real
+        length: 1
+        description: Maximum of of PITCH distribution
+    F6:
+      type: sink
+      input: RANGE.outputVec
+      label: pitch_range
+      doc:
+        type: Real
+        length: 1
+        description: Range of of PITCH distribution
+    F7:
+      type: sink
+      input: MODE.outputVec
+      label: pitch_mode
+      doc:
+        type: Real
+        length: Var
+        description: Mode of PITCH distribution (can be list!)
+    F8:
+      type: sink
+      input: ZIPF.outputVec
+      label: pitch_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of PITCH distribution.
+    F9:
+      type: sink
+      input: ENTROPY.outputVec
+      label: pitch_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Entropy of PITCH distribution (bits)
+      

@@ -1,0 +1,81 @@
+label: Average Run-length of Parson's Code Segments
+description: Means of run-length of segments of notes with constant interval direction. 
+category: Sequence/Interval
+
+feature:
+  source:
+    P:
+      param: pitch
+  process:
+    # compute interval direction
+    D1: 
+      type: diff
+      inputVec: P.outputVec
+    S1:
+      type: sign
+      inputVec: D1.outputVec
+    # find segments of adjacent notes with constant interval direction  
+    RL:
+      type: runlength
+      inputVec: S1.outputVec
+    # compute mean segment length of all segments found  
+    STAT1:
+      type: stat
+      measure: "mean"
+      inputVec: RL.segLen
+    # compute mean segment length of segments with positive interval direction  
+    TH1:
+      type: threshold
+      inputVec: RL.segVal
+      operator: "eq"
+      threshold: 1
+    SEL1: 
+      type: selector 
+      inputVec: RL.segLen
+      selectVec: TH1.outputVec
+    STAT2:
+      type: stat
+      measure: "mean"
+      inputVec: SEL1.outputVec
+    # compute mean segment length of segments with negative interval direction  
+    TH2:
+      type: threshold
+      inputVec: RL.segVal
+      operator: "eq"
+      threshold: -1
+    SEL2: 
+      type: selector 
+      inputVec: RL.segLen
+      selectVec: TH2.outputVec
+    STAT3:
+      type: stat
+      measure: "mean"
+      inputVec: SEL2.outputVec
+      
+     
+  sink:
+    F1:
+      type: sink
+      input: STAT1.outputVec
+      label: mean_segment_length_constant_interval_direction
+      doc:
+        type: Real
+        length: 1
+        description: Mean run-length of unisone sequences
+    F2:
+      type: sink
+      input: STAT2.outputVec
+      label: mean_segment_length_constant_positive_interval_direction
+      doc:
+        type: Real
+        length: 1
+        description: Mean run-length of strictly ascending sequences
+    F3:
+      type: sink
+      input: STAT3.outputVec
+      label: mean_segment_length_constant_negative_interval_direction
+      doc:
+        type: Real
+        length: 1
+        description: Mean run-length of strictly descending sequences
+   

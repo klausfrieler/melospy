@@ -1,0 +1,139 @@
+label: Metrical Circle Map Markov Features
+description: "Histogram for Metrical Circle Map (N=48) unigrams and bigrams (occurence and transition probabilites, entropies and  Zipf coefficients). See `this document <http://ismir2007.ismir.net/proceedings/ISMIR2007_p291_frieler.pdf>`_ or `here <http://www.mu-on.org/frieler/docs/frieler_mcm_2007.pdf>`_ for more details."
+category: Meter
+
+feature:
+
+  source:
+    MCM:
+      param: mcm
+      optParam: 48
+      
+  process:
+
+    UNIGRAM:
+      type: id
+      inputVec: MCM.outputVec
+
+    BIGRAM:
+      type: ngram
+      N: 2
+      inputVec: MCM.outputVec
+
+    CIRC_MEAN_ANGLE:
+      type: stat 
+      measure: circ_mean_angle
+      circ_max: 48
+      inputVec: UNIGRAM.outputVec           
+
+    CIRC_MEAN_LENGTH:
+      type: stat
+      measure: circ_mean_length
+      circ_max: 48
+      inputVec: UNIGRAM.outputVec           
+
+    CIRC_VAR:
+      type: stat
+      measure: circ_var
+      circ_max: 48
+      inputVec: UNIGRAM.outputVec           
+
+    CIRC_STD:
+      type: stat
+      measure: circ_std
+      circ_max: 48
+      inputVec: UNIGRAM.outputVec           
+
+    CIRC_DISP:
+      type: stat
+      measure: circ_disp
+      circ_max: 48
+      inputVec: UNIGRAM.outputVec           
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: UNIGRAM.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: UNIGRAM.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      numberClasses: 48
+      inputVec: UNIGRAM.outputVec           
+      
+  sink:
+
+    F0:
+      type: sink
+      input: CIRC_MEAN_ANGLE.outputVec
+      label: mcm_mean_angle
+      doc:
+        type: Real
+        length: 1
+        description: Angle of circular mean of MCM distribution
+    F1:
+      type: sink
+      input: CIRC_MEAN_LENGTH.outputVec
+      label: mcm_mean_length
+      doc:
+        type: Real
+        length: 1
+        description: Length of circular mean of MCM distribution
+    F2:
+      type: sink
+      input: CIRC_VAR.outputVec
+      label: mcm_var
+      doc:
+        type: Real
+        length: 1
+        description: Circular variance of MCM distribution (=1-length of circular mean)
+    F3:
+      type: sink
+      input: CIRC_STD.outputVec
+      label: mcm_std
+      doc:
+        type: Real
+        length: 1
+        description: Circular standard deviation of MCM distribution
+    F4:
+      type: sink
+      input: CIRC_DISP.outputVec
+      label: mcm_disp
+      doc:
+        type: Real
+        length: 1
+        description: Circular dispersion of MCM distribution
+    F5:
+      type: sink
+      input: MODE.outputVec
+      label: mcm_mode
+      doc:
+        type: Real
+        length: Var
+        description: Mode of MCM distribution (can be list!)
+
+    F6:
+      type: sink
+      input: ZIPF.outputVec
+      label: mcm_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of MCM distribution 
+
+    F7:
+      type: sink
+      input: ENTROPY.outputVec
+      label: mcm_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Normalized entropy of MCM distribution 
+
+
+

@@ -1,0 +1,222 @@
+label: Meter Raw Exports
+description: Exports several meter related features (event-based).
+category: Meter
+
+feature:
+  source:
+    METER:
+      param: meter
+    PERIODS:
+      param: periods
+    DIVISIONS:
+      param: divisions
+    BARS:
+      param: bars
+    BEATS:
+      param: beatpos
+    TATUMS:
+      param: tatums
+    DURTATUMS:
+      param: durtatum
+    WEIGHT:
+      param: metricalweights
+    METER_DECIMAL:
+      param: meter_decimal
+    SYNCOPATIONS:
+      param: syncopations
+    SYNCOPICITY:
+      param: syncopicity
+    MCM_48:
+      param: mcm
+      optParam: 48
+    MCC1:
+      param: metric_complexity
+      optParam: combined
+    MCC2:
+      param: metric_complexity
+      optParam: division
+    MCC3:
+      param: metric_complexity
+      optParam: compression
+      
+  process:
+    ID1: 
+      type: id
+      inputVec: METER.outputVec
+    ID1a: 
+      type: id
+      inputVec: PERIODS.outputVec
+    ID1b: 
+      type: id
+      inputVec: DIVISIONS.outputVec
+    ID2: 
+      type: id
+      inputVec: BARS.outputVec
+    ID3: 
+      type: id
+      inputVec: BEATS.outputVec
+    ID4: 
+      type: id
+      inputVec: TATUMS.outputVec
+    ID5: 
+      type: id
+      inputVec: DURTATUMS.outputVec
+    ID6: 
+      type: id
+      inputVec: WEIGHT.outputVec
+    ID7: 
+      type: id
+      inputVec: MCM_48.outputVec
+    ID8: 
+      type: id
+      inputVec: SYNCOPATIONS.outputVec
+    ID9: 
+      type: id
+      inputVec: SYNCOPICITY.outputVec
+
+    TRUNC1:
+      type: truncate
+      inputVec: WEIGHT.outputVec
+      mode: back
+      value: 1
+
+    TRUNC2:
+      type: truncate
+      inputVec: WEIGHT.outputVec
+      mode: front
+      value: 1
+
+    ARITHMETIC1:
+      type: arithmetic
+      inputVec1: TRUNC1.outputVec
+      inputVec2: 3
+      operator: "*"
+      
+    SUM1:
+      type: arithmetic
+      inputVec1: ARITHMETIC1.outputVec
+      inputVec2: TRUNC2.outputVec
+      operator: "+"
+
+    METRIC_COMPLEXITY1:
+      type: id
+      inputVec: MCC1.outputVec
+
+    METRIC_COMPLEXITY2:
+      type: id
+      inputVec: MCC2.outputVec
+
+    METRIC_COMPLEXITY3:
+      type: id
+      inputVec: MCC3.outputVec
+      
+  sink:
+    F1: 
+      input: ID1.outputVec
+      label: metrical_position
+      doc:
+        type: String
+        length: N
+        description: Metrical positions (in  MPD-notation) of events
+    F2: 
+      input: ID2.outputVec
+      label: bar
+      doc:
+        type: Integer 
+        length: N
+        description: Event bar numbers
+    F3: 
+      input: ID3.outputVec
+      label: beat
+      doc:
+        type: Integer 
+        length: N
+        description: Event beat numbers
+    F4: 
+      input: ID4.outputVec
+      label: tatum
+      doc:
+        type: Integer
+        length: N
+        description: Event tatum positions
+    F5: 
+      input: ID5.outputVec
+      label: durtatum
+      doc:
+        type: Integer
+        length: N 
+        description: Events durations measured in current tatums (handle with care!)
+    F6: 
+      input: ID6.outputVec
+      label: metrical_weight
+      doc:
+        type: Integer  [0:2]
+        length: N 
+        description: Metrical weight of event (0 for any subbeat event, 1 for metrical weak beat events, 2 for metrical strong events)
+    F7: 
+      input: ID7.outputVec
+      label: mcm_48
+      doc:
+        type: Integer  [0:47]
+        length: N 
+        description: Position in metrical circle map with N=48 divisions
+    F8: 
+      input: SUM1.outputVec
+      label: metrical_weight_transition_code
+      doc:
+        type: Integer [0:8]
+        length: N-1 
+        description: "Bigrams of metrical weights coded with ternary numbers. Let :math:`w_i`, :math:`w_{i+1}` be the weights of notes :math:`i, i+1`. Then the metrical weight transition value is :math:`3w_i + w_{i+1}`."
+    F9: 
+      input: ID1a.outputVec
+      label: period
+      doc:
+        type: Integer 
+        length: N
+        description: Event-based periods
+    F10: 
+      input: ID1b.outputVec
+      label: division
+      doc:
+        type: Integer 
+        length: N
+        description: Event-based beat divisions
+    F11: 
+      input: ID8.outputVec
+      label: syncopation
+      doc:
+        type: Integer [0:1]
+        length: N
+        description: Marker if event is syncopated (0=not syncopated, 1=syncopated)
+    F12: 
+      input: ID9.outputVec
+      label: syncopicity
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Ratio of syncopated events to non-syncopated events        
+    F13:
+      type: sink
+      input: METRIC_COMPLEXITY1.outputVec
+      label: metric_complexity
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Combined metric complexity after Frieler, in preparation.
+    F14:
+      type: sink
+      input: METRIC_COMPLEXITY2.outputVec
+      label: metric_complexity_division
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Division-based metric complexity after Frieler, in preparation.
+    F15:
+      type: sink
+      input: METRIC_COMPLEXITY3.outputVec
+      label: metric_complexity_compression
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Compression-based metric complexity after Frieler, in preparation.
+      

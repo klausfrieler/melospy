@@ -1,0 +1,66 @@
+label: Semitone Interval Distribution
+description: "Histogram and raw vector of semitone intervals, either limited to the range of -20 to 20 semitones or full range (only raw and with appended zero element)"
+category: Interval
+
+feature:
+
+  source:
+    PITCH:
+      param: pitch
+      
+  process:
+
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+
+    APPEND:
+      type: append
+      inputVec: DIFF.outputVec
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: -20
+      max: +20
+      density: False
+      inputVec: DIFF.outputVec
+       
+  sink:
+
+    F1:
+      type: sink
+      input: DIFF.outputVec
+      label: int_raw
+      doc:
+        type: Integer [-127:+127]
+        length: N-1
+        description: ist of semitone intervals
+
+    F2:
+      type: sink
+      input: HIST.bins  
+      label: int_hist_values
+      doc:
+        type: Integer [-20:+20]
+        length: 41
+        description: Bins of semitone intervals [-20:20]
+
+    F3:
+      type: sink
+      input: HIST.histVec
+      label: int_hist_counts
+      doc:
+        type: Integer
+        length: 41
+        description: Absolute frequencies of semitone intervals
+
+
+    F4:
+      type: sink
+      input: APPEND.outputVec
+      label: int_raw_full_pad
+      doc:
+        type: Integer [-127:+127]
+        length: N
+        description: List of semitone intervals with appended 0

@@ -1,0 +1,24 @@
+label: Number of Different Pitch Classes.
+description: Number of different pitch classes
+category: Pitch
+
+feature:
+  source:
+    PC:
+      param: pitchclass
+  process:
+
+    UNIQUE:
+      type: unique
+      inputVec: PC.outputVec
+    LEN:
+      type: length
+      inputVec: UNIQUE.outputVec
+  sink:
+    F1:
+      input: LEN.outputVec
+      label: number_of_unique_pc
+      doc:
+        type: Integer
+        length: 1
+        description: Average number of different pitch classes 

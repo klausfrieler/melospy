@@ -1,0 +1,87 @@
+label: Interval Class Trigrams
+description: "Histogram features for interval class (IC) trigrams: all unique IC trigrams and all IC trigrams occuring at least twice."
+category: Sequence/Interval
+
+feature:
+
+  source:
+
+    PITCH:
+      param: pitch
+
+  process:
+
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+
+    IC:
+      type: mod      
+      N: 12
+      circDist: True
+      inputVec: DIFF.outputVec
+
+    NGRAM:
+      type: ngram
+      N: 3
+      inputVec: IC.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: ic_trigram_values
+      doc:
+        type: Array  of Integer
+        length: Var
+        description: Histogram bins (all unique IC trigrams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: ic_trigram_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin counts (all unique IC trigrams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: ic_trigram_patterns
+      doc:
+        type: Array of Integer
+        length: Var
+        description: Histogram bins (all unique IC trigrams occuring at least twice)
+
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: ic_trigram_pattern_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique IC trigrams occuring at least twice)

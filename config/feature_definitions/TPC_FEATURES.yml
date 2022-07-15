@@ -1,0 +1,214 @@
+label: Tonal Pitch Class Single Features
+description: Histogram counts of all 12 TPC values (normalized to density), as well as basic circular statistics (cf. `<https://en.wikipedia.org/wiki/Directional_statistics>`_ ).
+category: Pitch
+
+feature:
+
+  source:
+    TPC:
+      param: tonal-pitch-class
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: 0
+      max: 11
+      density: True
+      inputVec: TPC.outputVec
+
+    CIRC_MEAN_ANGLE:
+      type: stat 
+      measure: circ_mean_angle
+      circ_max: 12
+      inputVec: TPC.outputVec           
+
+    CIRC_MEAN_LENGTH:
+      type: stat
+      measure: circ_mean_length
+      circ_max: 12
+      inputVec: TPC.outputVec           
+
+    CIRC_VAR:
+      type: stat
+      measure: circ_var
+      circ_max: 12
+      inputVec: TPC.outputVec           
+
+    CIRC_STD:
+      type: stat
+      measure: circ_std
+      circ_max: 12
+      inputVec: TPC.outputVec           
+
+    CIRC_DISP:
+      type: stat
+      measure: circ_disp
+      circ_max: 12
+      inputVec: TPC.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      numberClasses: 12
+      inputVec: TPC.outputVec         
+  sink:
+
+    F0:
+      type: sink
+      input: HIST.histVec
+      index: 0
+      label: tpc_hist_density_00
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 0
+    F1:
+      type: sink
+      input: HIST.histVec
+      index: 1
+      label: tpc_hist_density_01
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 1
+    F2:
+      type: sink
+      input: HIST.histVec
+      index: 2
+      label: tpc_hist_density_02
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 2
+    F3:
+      type: sink
+      input: HIST.histVec
+      index: 3
+      label: tpc_hist_density_03
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 3
+    F4:
+      type: sink
+      input: HIST.histVec
+      index: 4
+      label: tpc_hist_density_04
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 4
+    F5:
+      type: sink
+      input: HIST.histVec
+      index: 5
+      label: tpc_hist_density_05
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 5
+    F6:
+      type: sink
+      input: HIST.histVec
+      index: 6
+      label: tpc_hist_density_06
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 6
+    F7:
+      type: sink
+      input: HIST.histVec
+      index: 7
+      label: tpc_hist_density_07
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 7
+    F8:
+      type: sink
+      input: HIST.histVec
+      index: 8
+      label: tpc_hist_density_08
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 8
+    F9:
+      type: sink
+      input: HIST.histVec
+      index: 9
+      label: tpc_hist_density_09
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 9
+    F10:
+      type: sink
+      input: HIST.histVec
+      index: 10
+      label: tpc_hist_density_10
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 10
+    F11:
+      type: sink
+      input: HIST.histVec
+      index: 11
+      label: tpc_hist_density_11
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency TPC = 11
+    F12:
+      type: sink
+      input: CIRC_MEAN_ANGLE.outputVec
+      label: tpc_circ_mean_angle
+      doc:
+        type: Real
+        length: 1
+        description: Angle of circular mean of TPC distribution
+    F13:
+      type: sink
+      input: CIRC_MEAN_LENGTH.outputVec
+      label: tpc_circ_mean_length
+      doc:
+        type: Real
+        length: 1
+        description: Length of circular mean of TPC distribution
+    F14:
+      type: sink
+      input: CIRC_VAR.outputVec
+      label: tpc_circ_var
+      doc:
+        type: Real
+        length: 1
+        description: Circular variance of TPC distribution (=1-length of circular mean)
+    F15:
+      type: sink
+      input: CIRC_STD.outputVec
+      label: tpc_circ_std
+      doc:
+        type: Real
+        length: 1
+        description: Circular standard deviation of TPC distribution
+    F16:
+      type: sink
+      input: CIRC_DISP.outputVec
+      label: tpc_circ_disp
+      doc:
+        type: Real
+        length: 1
+        description: Circular dispersion of TPC distribution
+    F17:
+      type: sink
+      input: ENTROPY.outputVec
+      label: tpc_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Normalized entropy of TPC distribution
+      

@@ -1,0 +1,184 @@
+---
+dir: ../analysis/data/FINAL/DB
+outdir: ./results/melpat
+outfile: dolores_chromatic.csv
+
+maxN: 10
+
+tunes:
+#  - query:
+#      conditions:
+#        esac_info:
+#          collection: 'ALT%'
+#      display:
+#        esac_info: esacid
+#      type: esac
+  - query:
+      conditions:
+        solo_info:
+          performer: 'Miles%'
+          title: 'Dolo%'
+      display:
+        transcription_info: filename_sv
+      type: sv
+
+
+searches:
+  -
+    transform: interval
+    pattern: [+1, +1]
+    prefix: 0
+    suffix: 0
+    display: raw
+    label: asc
+  -
+    transform: interval
+    pattern: [-1, -1]
+    prefix: 0
+    suffix: 0
+    display: raw
+    label: desc
+#  -
+#    transform: interval
+#    pattern: [+2, +1, +2, -3,-4, +2]
+#    prefix: 0
+#    suffix: 0
+#    display: midi
+#    label: the_lick_int
+#  -
+#    transform: interval
+#    pattern: [+2, +1, +2, -3,-4, +2]
+#    prefix: 0
+#    suffix: 0
+#    display: stats
+#    label: the_lick_int
+#  -
+#    transform: interval
+#    pattern: [+2, +1, +2, -3,-4, +2]
+#    prefix: 0
+#    suffix: 0
+#    display: snippet
+#    label: the_lick_int
+#
+#  -
+#    transform: interval
+#    pattern: [-1, -2, 0, -2, -3]
+#    prefix: 0
+#    suffix: 0
+#    display: raw
+#    label: atemlos
+#  -
+#    transform: interval
+#    pattern: [-1, -2, 0, -2, -3]
+#    prefix: 0
+#    suffix: 0
+#    display: midi
+#    label: atemlos
+#  -
+#    transform: interval
+#    pattern: [-7, +2, +1, +2, +2]
+#    prefix: 0
+#    suffix: 0
+#    display: raw
+#    label: ts1978
+
+#  -
+#    transform: interval
+#    pattern: [+5, -1, -4, +2]
+#    prefix: 0
+#    suffix: 0
+#    display: midi
+#    label: hl2014
+#  -
+#    transform: interval
+#    pattern: [+5, -1, -4, +2]
+#    prefix: 0
+#    suffix: 0
+#    display: raw
+#    label: hl2014
+
+#  -
+#    transform: fuzzyinterval
+#    pattern: [+1, +1, +1, -2,-2]
+#    prefix: 0
+#    suffix: 0
+#    display: snippet
+#    label: fuzzyint
+
+#  -
+#    transform: interval
+#    pattern: [+2, +1, +2, -3,-4, +2]
+#    prefix: 0
+#    suffix: 0
+#    display: stats
+#    label: the_lick_int
+#
+#  -
+#    transform: interval
+#    pattern: [-4, -3, -5, 3, -3, 2, 9, -1]
+#    pattern: [-2, -3, -2, -2]
+#    prefix: 0
+#    suffix: 0
+#    display: csv
+#    label: lick1
+#
+#  -
+#    transform: interval
+#    pattern: [2,1, -1, -2]
+#    prefix: 0
+#    suffix: 0
+#    display: stats
+#    label: 21-1-2
+#  -
+#    transform: cdpc
+#    pattern: "12321"
+#    prefix: 0
+#    suffix: 0
+#    display: stats
+#    label: 12321
+#  -
+#    transform: cdpc
+#    pattern: "67176"
+#    prefix: 0
+#    suffix: 0
+#    display: stats
+#    label: lick3
+
+#  -
+#    transform: interval
+#    pattern: [-1, +3]
+#    prefix: 0
+#    suffix: 0
+#    display: midi
+#    label: lick3
+
+#  -
+#    transform: interval
+#    pattern: [-2, -2, -2, -2]
+#    prefix: 0
+#    suffix: 0
+#    display: midi
+#    label: lick1
+#  -
+#    transform: interval
+#    pattern: [2, 2, 2, 2]
+#    prefix: 0
+#    suffix: 0
+#    display: midi
+#    label: lick2
+#  -
+#    transform: interval
+#    pattern: max
+#    minN: 6
+#    minOccur: 2
+#    minSource: 2
+#    display: csv
+#    trillfilter: 2,2
+
+database:
+  type: sqlite3
+  path: esac.db
+  password: None
+  use: True
+
+

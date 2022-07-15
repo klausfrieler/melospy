@@ -1,0 +1,230 @@
+label: Interval jump accents
+description: "Large pitch jumps are thought to convey accents, i.e., have a higher salience. However, no consensus is reached what means 'large' nor if it should be absolute or relative jumps 
+nor if the tone before or after the jump or both should receive the accent. Some basic variants are collected here, but further research is needed to settle the issue."
+category: Accents
+
+feature:
+  source:
+    ACCENT_JUMPAFT3:
+      param: accent
+      optParam: jumpaft3
+
+    ACCENT_JUMPAFT4:
+      param: accent
+      optParam: jumpaft4
+
+    ACCENT_JUMPAFT5:
+      param: accent
+      optParam: jumpaft5
+
+    ACCENT_JUMPBEF3:
+      param: accent
+      optParam: jumpbef3
+
+    ACCENT_JUMPBEF4:
+      param: accent
+      optParam: jumpbef4
+
+    ACCENT_JUMPBEF5:
+      param: accent
+      optParam: jumpbef5
+
+    ACCENT_JUMPBEA3:
+      param: accent
+      optParam: jumpbea3
+
+    ACCENT_JUMPBEA4:
+      param: accent
+      optParam: jumpbea4
+
+    ACCENT_JUMPBEA5:
+      param: accent
+      optParam: jumpbea5
+
+    ACCENT_JUMPLOC:
+      param: accent
+      optParam: jumploc
+
+    ACCENT_JUMPLOC2:
+      param: accent
+      optParam: jumploc2
+
+    ACCENT_THOM:
+      param: accent
+      optParam: thom
+
+    ACCENT_THOM_THR:
+      param: accent
+      optParam: thom_thr
+
+  process:
+    JUMPAFT3:
+      type: id
+      inputVec: ACCENT_JUMPAFT3.outputVec
+
+    JUMPAFT4:
+      type: id
+      inputVec: ACCENT_JUMPAFT4.outputVec
+
+    JUMPAFT5:
+      type: id
+      inputVec: ACCENT_JUMPAFT5.outputVec
+
+    JUMPBEF3:
+      type: id
+      inputVec: ACCENT_JUMPBEF3.outputVec
+
+    JUMPBEF4:
+      type: id
+      inputVec: ACCENT_JUMPBEF4.outputVec
+
+    JUMPBEF5:
+      type: id
+      inputVec: ACCENT_JUMPBEF5.outputVec
+
+    JUMPBEA3:
+      type: id
+      inputVec: ACCENT_JUMPBEA3.outputVec
+
+    JUMPBEA4:
+      type: id
+      inputVec: ACCENT_JUMPBEA4.outputVec
+
+    JUMPBEA5:
+      type: id
+      inputVec: ACCENT_JUMPBEA5.outputVec
+
+    JUMPLOC:
+      type: id
+      inputVec: ACCENT_JUMPLOC.outputVec
+
+    JUMPLOC2:
+      type: id
+      inputVec: ACCENT_JUMPLOC2.outputVec
+
+    THOM:
+      type: id
+      inputVec: ACCENT_THOM.outputVec
+
+    THOM_THR:
+      type: id
+      inputVec: ACCENT_THOM_THR.outputVec
+
+  sink:
+    f0:
+      type: sink
+      input: JUMPAFT3.outputVec
+      label: jumpaft3
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones following a large pitch jump of at least 3 semi-tones (either direction).
+
+    f1:
+      type: sink
+      input: JUMPAFT4.outputVec
+      label: jumpaft4
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones following a large pitch jump of at least 4 semi-tones (either direction).
+
+    f2:
+      type: sink
+      input: JUMPAFT5.outputVec
+      label: jumpaft5
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones following a large pitch jump of at least 5 semi-tones (either direction).
+
+    f3:
+      type: sink
+      input: JUMPBEF3.outputVec
+      label: jumpbef3
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones before a large pitch jump of at least 3 semi-tones (either direction).
+
+    f4:
+      type: sink
+      input: JUMPBEF4.outputVec
+      label: jumpbef4
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones before a large pitch jump of at least 4 semi-tones (either direction).
+
+    f5:
+      type: sink
+      input: JUMPBEF5.outputVec
+      label: jumpbef5
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones before a large pitch jump of at least 5 semi-tones (either direction).
+
+    f6:
+      type: sink
+      input: JUMPBEA3.outputVec
+      label: jumpbea3
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones before and after a large pitch jump of at least 3 semi-tones (either direction).
+
+    f7:
+      type: sink
+      input: JUMPBEA4.outputVec
+      label: jumpbea4
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones before and after a large pitch jump of at least 4 semi-tones (either direction).
+
+    f8:
+      type: sink
+      input: JUMPBEA5.outputVec
+      label: jumpbea5
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones before and after a large pitch jump of at least 5 semi-tones (either direction).
+
+    f9:
+      type: sink
+      input: JUMPLOC.outputVec
+      label: jumploc
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones after a pitch interval that is at least 1 semi-tone larger than the previous interval.
+
+    f10:
+      type: sink
+      input: JUMPLOC2.outputVec
+      label: jumploc2
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents for tones after a pitch interval that is at least 2 semi-tone larger than the previous interval.
+
+    f11:
+      type: sink
+      input: THOM.outputVec
+      label: thom
+      doc: 
+        type: Real [0, 1]
+        length: N
+        description: Raw vector of accents according to Thomassen's algorithm (1982), which is based on the seven possible pitch direction patterns that can be formed by 2-interval chains (3-note patterns). Values are not binary, but probabilities. 
+
+    f12:
+      type: sink
+      input: THOM_THR.outputVec
+      label: thom_thr
+      doc: 
+        type: Inetger[0,1]
+        length: N
+        description: Raw vector of Thomassen accents with exceed a certain threshold (.75 in this case).
+

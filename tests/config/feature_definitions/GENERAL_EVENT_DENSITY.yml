@@ -1,0 +1,75 @@
+label: Event Densities
+description: Events per second and per bar
+category: Rhythm
+
+feature:
+  source:
+    TOTAL_DURATION:
+      param: total-duration
+    PITCH:
+      param: pitch
+    TOTAL_METRICAL_DURATION:
+      param: total-metrical-duration
+
+  process:
+    LEN:
+      type: length
+      inputVec: PITCH.outputVec
+
+    TOTALDUR:
+      type: id
+      inputVec: TOTAL_DURATION.outputVec
+
+    TOTALMETERDUR:
+      type: id
+      inputVec: TOTAL_METRICAL_DURATION.outputVec
+
+    DENSITY:
+      type: arithmetic
+      inputVec1: LEN.outputVec
+      inputVec2: TOTALDUR.outputVec
+      operator: "/"
+
+    DENSITY_PER_BAR:
+      type: arithmetic
+      inputVec1: LEN.outputVec
+      inputVec2: TOTALMETERDUR.outputVec
+      operator: "/"
+
+  sink:
+    F1:
+      input: DENSITY.outputVec
+      label: event_density
+      doc:
+        type: Real 
+        length: 1
+        description: Event density (notes per seconds)
+    F2:
+      input: TOTALDUR.outputVec
+      label: total_duration
+      doc:
+        type: Real 
+        length: 1
+        description: Total duration in seconds
+    F3:
+      input: DENSITY_PER_BAR.outputVec
+      label: metrical_event_density
+      doc:
+        type: Real 
+        length: 1
+        description: "Event density (notes per bar). WARNING: Might not be working properly with meter changes"
+    F4:
+      input: TOTALMETERDUR.outputVec
+      label: total_duration_bar
+      doc:
+        type: Real 
+        length: 1
+        description: Total duration in fractional bar units (e.g., 6 Quarter notes in 4/4 timing are 1.5 bars long)
+    F5:
+      input: LEN.outputVec
+      label: number_notes
+      doc:
+        type: Integer
+        length: 1
+        description: Number of events
+      

@@ -1,0 +1,77 @@
+label: Chordal Diatonic Pitch Class Trigrams
+description: "Histogram features for Chordal Diatonic Pitch Class (CDPC) trigrams: all unique CDPC trigrams and all CDPC trigrams occuring at least twice."
+category: Sequence/Pitch
+
+feature:
+
+  source:
+
+    CDPC:
+      param: chordal-pitch-class
+
+  process:
+
+    NGRAM:
+      type: ngram
+      N: 3
+      inputVec: CDPC.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: cdpc_trigrams
+      doc:
+        type: List of Strings
+        length: Var
+        description: Histogram bins (all unique CDPC 3-grams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: cdpc_trigram_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique CDPC 3-grams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: cdpc_trigram_pattern
+      doc:
+        type: List of String
+        length: Var
+        description: Histogram bins (all unique CDPC 3-grams occuring at least twice)
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: cdpc_trigram_pattern_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique CDPC 3-grams occuring at least twice)
+      

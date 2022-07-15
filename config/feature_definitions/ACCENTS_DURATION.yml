@@ -1,0 +1,123 @@
+label: Duration accents (Raw IOI)
+description: "Durations accent are based on the music-psychological observation, that for short-long (SL) patterns the second tone is perceived as accented 
+(more pronounced, more salient). Icnluded here are several accent features that operationalize the intuitive notion of short-long in several differnet ways based on raw IOIs."
+category: Accents
+
+feature:
+  source:
+    ACCENT_LONGPR:
+      param: accent
+      optParam: longpr
+
+    ACCENT_LONG2PR:
+      param: accent
+      optParam: long2pr
+
+    ACCENT_LONGMOD:
+      param: accent
+      optParam: longmod
+
+    ACCENT_LONG2MOD:
+      param: accent
+      optParam: long2mod
+
+    ACCENT_LONGMOD_WIN5:
+      param: accent
+      optParam:
+        type: long-ioi
+        window_size: 5
+        threshold: 1.41
+        offset: .04        
+
+    ACCENT_LONG2MOD_WIN5:
+      param: accent
+      optParam:
+        type: long-ioi
+        window_size: 5
+        threshold: 3
+        offset: .04        
+
+  process:
+    LONGPR:
+      type: id
+      inputVec: ACCENT_LONGPR.outputVec
+
+    LONG2PR:
+      type: id
+      inputVec: ACCENT_LONG2PR.outputVec
+
+    LONGMOD:
+      type: id
+      inputVec: ACCENT_LONGMOD.outputVec
+
+    LONG2MOD:
+      type: id
+      inputVec: ACCENT_LONG2MOD.outputVec
+
+    LONGMOD_WIN5:
+      type: id
+      inputVec: ACCENT_LONGMOD_WIN5.outputVec
+
+    LONG2MOD_WIN5:
+      type: id
+      inputVec: ACCENT_LONG2MOD_WIN5.outputVec
+
+             
+  sink:
+    f1:
+      type: sink
+      input: LONGPR.outputVec
+      label: longpr
+      doc:
+        type: Integer [0,1]        
+        length: N
+        description: Raw accent vector of tones with longer IOI than the previous tone.
+
+    f2:
+      type: sink
+      input: LONG2PR.outputVec
+      label: long2pr
+      doc:
+        type: Integer [0,1]        
+        length: N
+        description: Raw accent vector of tones with an at least twice longer IOI than the previous tone.
+
+
+    f3:
+      type: sink
+      input: LONGMOD.outputVec
+      label: longmod
+      doc:
+        type: Integer [0,1]        
+        length: N
+        description: Raw accent vector of tones with a longer IOI than mode IOI of all tones.
+
+
+    f4:
+      type: sink
+      input: LONG2MOD.outputVec
+      label: long2mod
+      doc:
+        type: Integer [0,1]        
+        length: N
+        description: Raw accent vector of tones with an  at least twice longer IOI than mode IOI of all tones.
+
+
+    f5:
+      type: sink
+      input: LONGMOD_WIN5.outputVec
+      label: longmod_win5
+      doc:
+        type: Integer [0,1]        
+        length: N
+        description: Raw accent vector of tones with IOI that is at least 41% longer than mean of the past 5 IOIs.
+
+    f6:
+      type: sink
+      input: LONG2MOD_WIN5.outputVec
+      label: long2mod_win5
+      doc:
+        type: Integer [0,1]        
+        length: N
+        description: Raw accent vector of tones with IOI that is at least twice as long than mean of the past 5 IOIs.
+   

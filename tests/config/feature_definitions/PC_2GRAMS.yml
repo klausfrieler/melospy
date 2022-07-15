@@ -1,0 +1,107 @@
+label: Pitch Class Bigrams
+description: "Histogram features for pitch class (PC) bigrams: all unique PC bigrams and all PC bigrams occuring at least twice."
+category: Sequence/Pitch
+
+feature:
+
+  source:
+
+    PC:
+      param: pitchclass
+
+  process:
+
+    NGRAM:
+      type: ngram
+      N: 2
+      inputVec: PC.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+
+    ENTROPY:
+      type: stat
+      measure: entropy_hist
+      normalizeEntropy: False
+      inputVec: NGRAMHIST.histVec           
+
+    ENTROPY_NORM:
+      type: stat
+      measure: entropy_hist
+      normalizeEntropy: True
+      numberClasses: 144
+      inputVec: NGRAMHIST.histVec           
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: pc_2grams_values
+      doc:
+        type: Array of Integer [0:11]
+        length: Var
+        description: Histogram bins (all unique PC bigrams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: pc_2grams_hist
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique PC bigrams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: pc_2grams_pattern
+      doc:
+        type: Array of Integer [0:11]
+        length: Var
+        description: Histogram bins (all unique PC bigrams occuring at least twice)
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: pc_2grams_pat_freq
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique PC bigrams occuring at least twice)
+
+    F5:
+      type: sink
+      input: ENTROPY.outputVec
+      label: pc_bigram_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Unnormalized Entropy of bigram distribution in bits
+    F6:
+      type: sink
+      input: ENTROPY_NORM.outputVec
+      label: pc_bigram_entropy_norm
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Normalized Entropy of bigram distribution 

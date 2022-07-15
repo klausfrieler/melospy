@@ -1,0 +1,194 @@
+label: Extended Chordal Diatonic Pitch Class Single Features
+description: Normalized histogram counts, mode, entropy and Zipf coefficient of CDPCX distribution.
+category: Pitch
+
+feature:
+
+  source:
+    CDPCX:
+      param: chordal-diatonic-pitch-class-ext
+      optParam: filterNC
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: nominal
+      density: True
+      sort: None
+      inputVec: CDPCX.outputVec
+      fixed-bins: ['1', '-', '2', '3', '4', '5', '6', '7', 'T', 'B', 'L', '<', '>', '%']
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: CDPCX.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      numberClasses: 14
+      inputVec: CDPCX.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: CDPCX.outputVec           
+      
+  sink:
+
+    F0:
+      type: sink
+      input: HIST.histVec
+      index: 0
+      label: cdpcx_density_1
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX = '1'
+    F1:
+      type: sink
+      input: HIST.histVec
+      index: 2
+      label: cdpcx_density_2
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX = '2'
+    F2:
+      type: sink
+      input: HIST.histVec
+      index: 3
+      label: cdpcx_density_3
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '3'
+    F3:
+      type: sink
+      input: HIST.histVec
+      index: 4
+      label: cdpcx_density_4
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '4'
+    F4:
+      type: sink
+      input: HIST.histVec
+      index: 5
+      label: cdpcx_density_5
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '5'
+    F5:
+      type: sink
+      input: HIST.histVec
+      index: 6
+      label: cdpcx_density_6
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '6'
+    F6:
+      type: sink
+      input: HIST.histVec
+      index: 7
+      label: cdpcx_density_7
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '7'
+    F7:
+      type: sink
+      input: HIST.histVec
+      index: 8
+      label: cdpcx_density_T
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  'T'
+    F8:
+      type: sink
+      input: HIST.histVec
+      index: 9
+      label: cdpcx_density_B
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  'B'
+    F9:
+      type: sink
+      input: HIST.histVec
+      index: 10
+      label: cdpcx_density_L
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX = 'L'
+    F10:
+      type: sink
+      input: HIST.histVec
+      index: 11
+      label: cdpcx_density_<
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '<'
+    F11:
+      type: sink
+      input: HIST.histVec
+      index: 12
+      label: cdpcx_density_>
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '>'
+
+    F12:
+      type: sink
+      input: HIST.histVec
+      index: 1
+      label: cdpcx_density_b2
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '-' (b2)
+
+    F13:
+      type: sink
+      input: HIST.histVec
+      index: 13
+      label: cdpcx_density_b6
+      doc:
+        type: Real
+        length: 1
+        description: Relative frequency CDPCX =  '%' (b6)
+
+    F14:
+      type: sink
+      input: MODE.outputVec
+      label: cdpcx_mode
+      doc:
+        type: Real
+        length: Var
+        description: Mode of CDPCX distribution (can be list!)
+
+    F15:
+      type: sink
+      input: ENTROPY.outputVec
+      label: cdpcx_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Normalized entropy of CDPCX distribution
+
+    F16:
+      type: sink
+      input: ZIPF.outputVec
+      label: cdpcx_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of CDPCX distribution      

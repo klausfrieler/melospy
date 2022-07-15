@@ -1,0 +1,76 @@
+label: Parson's Code Trigrams
+description: "Histogram features for Parson's Code (PARSON) trigrams: all unique PARSON trigrams and all PARSON trigrams occuring at least twice."
+category: Sequence/Interval
+
+feature:
+
+  source:
+
+    PARSON:
+      param: parsons
+
+  process:
+
+    NGRAM:
+      type: ngram
+      N: 3
+      inputVec: PARSON.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: parson_3grams_values
+      doc:
+        type: Array of Integer [-1:+1]
+        length: Var
+        description: Histogram bins (all unique PARSON trigrams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: parson_3grams_hist
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique PARSON trigrams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: parson_3grams_pattern
+      doc:
+        type: Array of Integer [-1:+1]
+        length: Var
+        description: Histogram bins (all unique PARSON trigrams occuring at least twice)
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: parson_3grams_pat_freq
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique PARSON trigrams occuring at least twice)

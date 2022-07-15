@@ -1,0 +1,109 @@
+label: Semitone Interval Bigrams
+description: "Histogram features for semitone intervals (INT) bigrams: all unique INT bigrams and all INT bigrams occuring at least twice."
+category: Sequence/Interval
+
+feature:
+
+  source:
+
+    PITCH:
+      param: pitch
+
+  process:
+
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+
+    NGRAM:
+      type: ngram
+      N: 2
+      inputVec: DIFF.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+    ENTROPY:
+      type: stat
+      measure: entropy_hist
+      normalizeEntropy: False
+      inputVec: NGRAMHIST.histVec           
+
+    ENTROPY_NORM:
+      type: stat
+      measure: entropy_hist
+      normalizeEntropy: True
+      inputVec: NGRAMHIST.histVec           
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: int_bigram_values
+      doc:
+        type: Array  of Integer
+        length: Var
+        description: Histogram bins (all unique INT bigrams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: int_bigram_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin counts (all unique INT bigrams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: int_bigram_patterns
+      doc:
+        type: Array of Integer
+        length: Var
+        description: Histogram bins (all unique INT bigrams occuring at least twice)
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: int_bigram_pattern_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin counts (all unique INT bigrams occuring at least twice)
+
+    F5:
+      type: sink
+      input: ENTROPY.outputVec
+      label: int_bigram_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Unnormalized Entropy of bigram distribution in bits
+    F6:
+      type: sink
+      input: ENTROPY_NORM.outputVec
+      label: int_bigram_entropy_norm
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Normalized Entropy of bigram distribution 

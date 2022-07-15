@@ -1,0 +1,295 @@
+label: Semitone Interval Single Features
+description: Calculates set of basic statistical sample descriptors (mean, median, mode, min, max, range, var, std) for interval and absolute interval distribution 
+category: Interval
+
+feature:
+
+  source:
+    PITCH:
+      param: pitch
+            
+  process:
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+
+    ABS:
+      type: abs
+      inputVec: DIFF.outputVec
+
+    MEAN:
+      type: stat 
+      measure: mean
+      inputVec: DIFF.outputVec           
+
+    MEDIAN:
+      type: stat
+      measure: median
+      inputVec: DIFF.outputVec           
+
+    MODE:
+      type: stat
+      measure: mode
+      inputVec: DIFF.outputVec           
+
+    VAR:
+      type: stat
+      measure: var
+      inputVec: DIFF.outputVec           
+
+    STD:
+      type: stat
+      measure: std
+      inputVec: DIFF.outputVec           
+
+    MAX:
+      type: stat
+      measure: max
+      inputVec: DIFF.outputVec           
+
+    MIN:
+      type: stat
+      measure: min
+      inputVec: DIFF.outputVec           
+
+    RANGE:
+      type: stat
+      measure: range
+      inputVec: DIFF.outputVec           
+
+    ZIPF:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: DIFF.outputVec           
+
+    ENTROPY:
+      type: stat
+      measure: entropy
+      inputVec: DIFF.outputVec           
+    
+    MEAN_ABS:
+      type: stat 
+      measure: mean
+      inputVec: ABS.outputVec           
+
+    MEDIAN_ABS:
+      type: stat
+      measure: median
+      inputVec: ABS.outputVec           
+
+    MODE_ABS:
+      type: stat
+      measure: mode
+      inputVec: ABS.outputVec           
+
+    VAR_ABS:
+      type: stat
+      measure: var
+      inputVec: ABS.outputVec           
+
+    STD_ABS:
+      type: stat
+      measure: std
+      inputVec: ABS.outputVec           
+
+    MAX_ABS:
+      type: stat
+      measure: max
+      inputVec: ABS.outputVec           
+
+    MIN_ABS:
+      type: stat
+      measure: min
+      inputVec: ABS.outputVec           
+
+    RANGE_ABS:
+      type: stat
+      measure: range
+      inputVec: ABS.outputVec           
+
+    ZIPF_ABS:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: ABS.outputVec           
+
+    ENTROPY_ABS:
+      type: stat
+      measure: entropy
+      inputVec: ABS.outputVec   
+
+    SUM_ABS:
+      type: sum
+      inputVec: ABS.outputVec   
+
+  sink:
+
+    F0:
+      type: sink
+      input: MEAN.outputVec
+      label: int_mean
+      doc:
+        type: Real
+        length: 1
+        description: Mean of interval distribution
+    F1:
+      type: sink
+      input: MEDIAN.outputVec
+      label: int_median
+      doc:
+        type: Real
+        length: 1
+        description: Median of interval distribution
+    F2:
+      type: sink
+      input: VAR.outputVec
+      label: int_var
+      doc:
+        type: Real
+        length: 1
+        description: Variance of of interval distribution
+    F3:
+      type: sink
+      input: STD.outputVec
+      label: int_std
+      doc:
+        type: Real
+        length: 1
+        description: Standard deviation of interval distribution
+    F4:
+      type: sink
+      input: MIN.outputVec
+      label: int_min
+      doc:
+        type: Real
+        length: 1
+        description: Minimum of of interval distribution
+    F5:
+      type: sink
+      input: MAX.outputVec
+      label: int_max
+      doc:
+        type: Real
+        length: 1
+        description: Maximum of of interval distribution
+    F6:
+      type: sink
+      input: RANGE.outputVec
+      label: int_range
+      doc:
+        type: Real
+        length: 1
+        description: Range of of interval distribution
+    F7:
+      type: sink
+      input: MODE.outputVec
+      label: int_mode
+      doc:
+        type: Real
+        length: Var
+        description: Mode of interval distribution (can be list!)
+    F8:
+      type: sink
+      input: ZIPF.outputVec
+      label: int_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of interval distribution.
+    F9:
+      type: sink
+      input: ENTROPY.outputVec
+      label: int_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Entropy of interval distribution (bits)
+
+    F10:
+      type: sink
+      input: MEAN_ABS.outputVec
+      label: abs_int_mean
+      doc:
+        type: Real
+        length: 1
+        description: Mean of absolute interval distribution
+    F11:
+      type: sink
+      input: MEDIAN_ABS.outputVec
+      label: abs_int_median
+      doc:
+        type: Real
+        length: 1
+        description: Median of absolute interval distribution
+    F12:
+      type: sink
+      input: VAR_ABS.outputVec
+      label: abs_int_var
+      doc:
+        type: Real
+        length: 1
+        description: Variance of absolute interval distribution
+    F13:
+      type: sink
+      input: STD_ABS.outputVec
+      label: abs_int_std
+      doc:
+        type: Real
+        length: 1
+        description: Standard deviation of interval distribution
+    F14:
+      type: sink
+      input: MIN_ABS.outputVec
+      label: abs_int_min
+      doc:
+        type: Real
+        length: 1
+        description: Minimum of absolute interval distribution
+    F15:
+      type: sink
+      input: MAX_ABS.outputVec
+      label: abs_int_max
+      doc:
+        type: Real
+        length: 1
+        description: Maximum of absolute interval distribution
+    F16:
+      type: sink
+      input: RANGE_ABS.outputVec
+      label: abs_int_range
+      doc:
+        type: Real
+        length: 1
+        description: Range of absolute interval distribution
+    F17:
+      type: sink
+      input: MODE_ABS.outputVec
+      label: abs_int_mode
+      doc:
+        type: Real
+        length: 1
+        description: Mode of interval absolute distribution (can be list!)
+    F18:
+      type: sink
+      input: ZIPF_ABS.outputVec
+      label: abs_int_zipf
+      doc:
+        type: Real
+        length: 1
+        description: Zipf coefficient of absolute interval distribution.
+    F19:
+      type: sink
+      input: ENTROPY_ABS.outputVec
+      label: abs_int_entropy
+      doc:
+        type: Real
+        length: 1
+        description: Entropy of absolute interval distribution (bits)
+    F20:
+      type: sink
+      input: SUM_ABS.outputVec
+      label: abs_int_sum
+      doc:
+        type: Real
+        length: 1
+        description: Sum of absolute intervals (= distance moved in pitch space)
+      

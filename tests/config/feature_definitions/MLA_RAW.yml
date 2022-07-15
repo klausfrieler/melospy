@@ -1,0 +1,171 @@
+label: MLA Exports
+description: Exports several mid-level analysis (MLA) related features (section event-based).
+category: MLA
+
+feature:
+  source:
+    MLA_RAW:
+      param: ideas
+      optParam: 
+        type: id
+        events: False
+        include_voids: True
+    MLA_MAIN:
+      param: ideas
+      optParam: 
+        type: main-type
+        events: False
+        include_voids: True
+    MLA_FULL:
+      param: ideas
+      optParam: 
+        type: full-type
+        events: False
+        include_voids: True
+    MLA_BACKREF:
+      param: ideas
+      optParam: 
+        type: backref
+        events: False
+        include_voids: True
+    MLA_GLUE:
+      param: ideas
+      optParam: 
+        type: glue
+        events: False
+        include_voids: True
+    MLA_MODIFIER:
+      param: ideas
+      optParam: 
+        type: modifier
+        events: False
+        include_voids: True
+    MLA_LENGTHS:
+      param: idea_durs
+      optParam: 
+        type: notes
+        include_voids: True
+    MLA_DURATION_SECS:
+      param: idea_durs
+      optParam: 
+        type: duration
+        unit: sec
+        include_voids: True
+    MLA_DURATION_BARS:
+      param: idea_durs
+      optParam: 
+        type: IOI
+        unit: bars
+        include_voids: True
+    MLA_MAIN_DIR:
+      param: ideas
+      optParam: 
+        type: main-direction
+        events: False
+        include_voids: True
+
+
+  process:
+    ID1: 
+      type: id
+      inputVec: MLA_RAW.outputVec
+    ID2: 
+      type: id
+      inputVec: MLA_MAIN.outputVec
+    ID3: 
+      type: id
+      inputVec: MLA_FULL.outputVec
+    ID4: 
+      type: id
+      inputVec: MLA_BACKREF.outputVec
+    ID5: 
+      type: id
+      inputVec: MLA_GLUE.outputVec
+    ID6: 
+      type: id
+      inputVec: MLA_MODIFIER.outputVec
+    ID7: 
+      type: id
+      inputVec: MLA_LENGTHS.outputVec
+    ID8: 
+      type: id
+      inputVec: MLA_DURATION_SECS.outputVec
+    ID9: 
+      type: id
+      inputVec: MLA_DURATION_BARS.outputVec
+    ID10: 
+      type: id
+      inputVec: MLA_MAIN_DIR.outputVec
+      
+  sink:
+    F1: 
+      input: ID1.outputVec
+      label: MLA_raw
+      doc:
+        type: String
+        length: Var
+        description: Raw list of mid-level units
+    F2: 
+      input: ID2.outputVec
+      label: MLA_main_type
+      doc:
+        type: String
+        length: Var
+        description: Raw list of main types of mid-level units
+    F3: 
+      input: ID3.outputVec
+      label: MLA_full_type
+      doc:
+        type: String
+        length: Var
+        description: Raw list of full types of mid-level units
+    F4: 
+      input: ID4.outputVec
+      label: MLA_backref
+      doc:
+        type: String
+        length: Var
+        description: Raw list of back references for mid-level units
+    F5: 
+      input: ID5.outputVec
+      label: MLA_glue
+      doc:
+        type: String
+        length: Var
+        description: Raw list of glue operators of mid-level units
+    F6: 
+      input: ID6.outputVec
+      label: MLA_modifier
+      doc:
+        type: String
+        length: Var
+        description: Raw list of modifiere for mid-level units
+    F7: 
+      input: ID7.outputVec
+      label: MLA_length
+      doc:
+        type: String
+        length: Var
+        description: Raw list of idea length as number of notes
+    F8: 
+      input: ID8.outputVec
+      label: MLA_duration
+      doc:
+        type: String
+        length: Var
+        description: Raw list of idea duration in secs onset-offset
+    F9: 
+      input: ID9.outputVec
+      label: MLA_duration_bars
+      doc:
+        type: String
+        length: Var
+        description: Raw list of idea duration in decimal bar time
+    F10: 
+      input: ID10.outputVec
+      label: MLA_main_dir
+      doc:
+        type: String
+        length: Var
+        description: Raw list of main directions of mid-level units
+    

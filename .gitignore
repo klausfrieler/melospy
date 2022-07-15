@@ -1,0 +1,10 @@
+**/*.pyc
+.cache
+.spyproject/
+melospy.egg-info/
+
+# testing
+tests/html/*
+!tests/html/.keep
+tests/coverage/*
+!tests/coverage/.keep

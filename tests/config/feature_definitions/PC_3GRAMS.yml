@@ -1,0 +1,76 @@
+label: Pitch Class Trigrams
+description: "Histogram features for pitch class (PC) trigrams: all unique PC trigrams and all PC trigrams occuring at least twice."
+category: Sequence/Pitch
+
+feature:
+
+  source:
+
+    PC:
+      param: pitchclass
+
+  process:
+
+    NGRAM:
+      type: ngram
+      N: 3
+      inputVec: PC.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: pc_3grams_values
+      doc:
+        type: Array of Integer [0:11]
+        length: Var
+        description: Histogram bins (all unique PC trigrams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: pc_3grams_hist
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique PC trigrams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: pc_3grams_pattern
+      doc:
+        type: Array of Integer [0:11]
+        length: Var
+        description: Histogram bins (all unique PC trigrams occuring at least twice)
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: pc_3grams_pat_freq
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique PC trigrams occuring at least twice)

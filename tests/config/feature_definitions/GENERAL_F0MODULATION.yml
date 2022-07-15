@@ -1,0 +1,83 @@
+label: Modulation
+description: "F0-modulation of notes. Possible annoated values are ``fall-off``, ``slide``, ``vibrato``, ``bend``, ``straight``, or an empty string, which might indicate 
+that either no modulation is present or that no articulation was annotated. There are furthermore three automatically extracted value available: f0_mod_range_cents (Modulations in cents), 
+f0_mod_freq_hz (Modulation frequency in Hz), f0_median_dev (Median devation from nominal 12TET pitch in cents)" 
+category: Tone Formation
+
+feature:
+  source:
+    MODULATION_ANNOTATED:
+      param: modulation
+      optParam: annotated
+      
+    MODULATION_ANNOTATED_SHORT:
+      param: modulation
+      optParam: annotated_short
+
+    MODULATION_RANGE:
+      param: modulation
+      optParam: range_cents
+
+    MODULATION_FREQ_HZ:
+      param: modulation
+      optParam: freq_hz
+
+    MODULATION_MED_DEV:
+      param: modulation
+      optParam: median_dev
+      
+  process:
+    ID1:
+      type: id
+      inputVec: MODULATION_ANNOTATED.outputVec
+    ID2:
+      type: id
+      inputVec: MODULATION_ANNOTATED_SHORT.outputVec
+    ID3:
+      type: id
+      inputVec: MODULATION_RANGE.outputVec
+    ID4:
+      type: id
+      inputVec: MODULATION_FREQ_HZ.outputVec
+    ID5:
+      type: id
+      inputVec: MODULATION_MED_DEV.outputVec
+
+
+  sink:
+    F1:
+      input: ID1.outputVec
+      label: modulation
+      doc:
+        type: String
+        length: N
+        description: Annonated modulation per tone.
+    F2:
+      input: ID2.outputVec
+      label: modulation_short
+      doc:
+        type: String
+        length: N
+        description: Annonated modulation per tone (short label).
+    F3:
+      input: ID3.outputVec
+      label: f0_mod_range_cents
+      doc:
+        type: Real
+        length: N
+        description: Extracted modulation range (cents).
+    F4:
+      input: ID4.outputVec
+      label: f0_mod_freq
+      doc:
+        type: Real
+        length: N
+        description: Extracted modulation range (Hz).
+    F5:
+      input: ID5.outputVec
+      label: f0_median_dev
+      doc:
+        type: Real
+        length: N
+        description: Extracted median deviation from nominal 12TET pitch (cents).
+      

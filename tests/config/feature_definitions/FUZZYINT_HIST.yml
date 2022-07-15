@@ -1,0 +1,48 @@
+label: Fuzzy Interval Distribution (Refined Contour)
+description: "Histogram and raw vector of fuzzy intervals (aka refined contour). Values: **big jump up/down** (+/-4), **jump up/down** (+/-3), **leap up/down** (+/-1), **step up/down** (+/-1), **repetition** (0)"
+category: Interval
+
+feature:
+
+  source:
+    INTFUZZ:
+      param: fuzzyinterval
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: -4
+      max: +4
+      density: False
+      inputVec: INTFUZZ.outputVec
+       
+  sink:
+
+    F1:
+      type: sink
+      input: INTFUZZ.outputVec
+      label: fuzzyint_raw
+      doc:
+        type: Integer [-4:4]
+        length: N-1
+        description: Raw output (Fuzzy interval values over the full melody)
+
+    F2:
+      type: sink
+      input: HIST.bins  
+      label: fuzzyint_hist_values
+      doc:
+        type: Integer [-4:4]
+        length: 5
+        description: Histogram bins
+
+    F3:
+      type: sink
+      input: HIST.histVec
+      label: fuzzyint_hist_counts
+      doc:
+        type: Real
+        length: 5
+        description: Histogram bin counts (abs. frequencies)

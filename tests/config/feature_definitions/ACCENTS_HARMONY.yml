@@ -1,0 +1,62 @@
+label: Harmony accents
+description: Structural marker for in-chord or out-of-chord tones (only for melodies with annotated chords).
+category: Accents
+
+feature:
+  source:
+    ACCENT_TRIAD:
+      param: accent
+      optParam:
+        type: harmony
+        include_upper: False
+        inverted: False
+
+    ACCENT_INCHORD:
+      param: accent
+      optParam: inchord
+
+    ACCENT_OUTCHORD:
+      param: accent
+      optParam: outchord
+
+  process:
+    TRIAD_RAW:
+      type: id
+      inputVec: ACCENT_TRIAD.outputVec
+
+    INCHORD:
+      type: id
+      inputVec: ACCENT_INCHORD.outputVec
+
+    OUTCHORD:
+      type: id
+      inputVec: ACCENT_OUTCHORD.outputVec
+             
+  sink:
+    f1:
+      type: sink
+      input: TRIAD_RAW.outputVec
+      label: triad
+      doc:
+        type: Integer [0,1]        
+        length: Var
+        description: Raw markers of chord tones (excluding upper structures).
+
+    f2:
+      type: sink
+      input: INCHORD.outputVec
+      label: inchord
+      doc:
+        type: Integer [0,1]        
+        length: Var
+        description: Raw markers of chord tones (including upper structures).
+
+    f3:
+      type: sink
+      input: OUTCHORD.outputVec
+      label: outchord
+      doc:
+        type: Integer [0,1]        
+        length: Var
+        description: Raw marker vector of non-chord tones.
+   

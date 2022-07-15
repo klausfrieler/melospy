@@ -1,0 +1,72 @@
+label: Percentage of Chromatic Passages 
+description: Computes the percentage of chromatic passages (interval sequences with values +1 or -1 with at least three notes), in the set of all passages (sequences of constant interval).
+category: Sequence/Interval
+
+feature:
+  source:
+    PITCH:
+      param: pitch
+  process:
+    # compute interval 
+    DIFF: 
+      type: diff
+      inputVec: PITCH.outputVec
+    # run-length
+    RL: 
+      type: runlength
+      inputVec: DIFF.outputVec
+        
+    # mask with True for segments with intervals of +1 or -1 semitones
+    TH1:
+      type: threshold
+      inputVec: RL.segVal
+      threshold: 1
+      operator: "eq"
+    TH2:
+      type: threshold
+      inputVec: RL.segVal
+      threshold: -1
+      operator: "eq"
+    LOG:
+      type: logic
+      inputVec1: TH1.outputVec
+      inputVec2: TH2.outputVec
+      operator: "or"
+    SEL:
+      type: selector
+      inputVec: RL.segLen
+      selectVec: LOG.outputVec
+    
+    # find segments with at least 2 intervals
+    TH3:
+      type: threshold
+      inputVec: SEL.outputVec
+      threshold: 2
+      operator: "ge"
+    SEL2:
+      type: selector
+      inputVec: SEL.outputVec
+      selectVec: TH3.outputVec
+      
+    # compute ratio
+    SUM1:
+      type: sum
+      inputVec: SEL2.outputVec
+    SUM2:
+      type: sum
+      inputVec: RL.segLen
+    ARI1: 
+      type: arithmetic
+      inputVec1: SUM1.outputVec
+      inputVec2: SUM2.outputVec
+      operator: "/"
+          
+  sink:
+    f1:
+      type: sink
+      input: ARI1.outputVec
+      label: ratio_chromatic_sequences
+      doc:
+        type: Real
+        length: 1
+        description: Percentage of of chromatic passages.      

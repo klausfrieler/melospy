@@ -1,0 +1,152 @@
+label: Average Run-lengths of Chromatic passages 
+description: Run-lengths and means of chromatic sequences with intervals of size +1 or -1
+category: Sequence/Interval
+
+feature:
+  source:
+    FUZZYINT:
+      param: fuzzyinterval
+  process:
+    # run-length
+    ABS_FUZZ:
+      type: abs
+      inputVec: FUZZYINT.outputVec
+
+    RL: 
+      type: runlength
+      inputVec: FUZZYINT.outputVec
+    ABS_RL: 
+      type: runlength
+      inputVec: ABS_FUZZ.outputVec
+        
+    # mask with True for segments with steps up and down (values +1, -1)
+    TH_ASC:
+      type: threshold
+      inputVec: RL.segVal
+      threshold: 1
+      operator: "eq"
+    TH_DESC:
+      type: threshold
+      inputVec: RL.segVal
+      threshold: -1
+      operator: "eq"
+
+    TH_MIXED:
+      type: threshold
+      inputVec: ABS_RL.segVal
+      threshold: 1
+      operator: "eq"
+
+    SEL_ASC:
+      type: selector
+      inputVec: RL.segLen
+      selectVec: TH_ASC.outputVec
+
+    SEL_DESC:
+      type: selector
+      inputVec: RL.segLen
+      selectVec: TH_DESC.outputVec
+
+    SEL_MIXED:
+      type: selector
+      inputVec: ABS_RL.segLen
+      selectVec: TH_MIXED.outputVec
+
+    
+    # find segments with at least 2 intervals
+ 
+    TH_ASC_2:
+      type: threshold
+      inputVec: SEL_ASC.outputVec
+      threshold: 2
+      operator: "ge"
+
+    SEL_LEN_ASC:
+      type: selector
+      inputVec: SEL_ASC.outputVec
+      selectVec: TH_ASC_2.outputVec
+
+    TH_DESC_2:
+      type: threshold
+      inputVec: SEL_DESC.outputVec
+      threshold: 2
+      operator: "ge"
+
+    SEL_LEN_DESC:
+      type: selector
+      inputVec: SEL_DESC.outputVec
+      selectVec: TH_DESC_2.outputVec
+
+    TH_MIXED_2:
+      type: threshold
+      inputVec: SEL_MIXED.outputVec
+      threshold: 2
+      operator: "ge"
+
+    SEL_LEN_MIXED:
+      type: selector
+      inputVec: SEL_MIXED.outputVec
+      selectVec: TH_MIXED_2.outputVec
+ 
+        
+    # mean length of chromatic note sequences
+
+    ARI_ASC: 
+      type: arithmetic
+      operator: "+"
+      inputVec1: SEL_LEN_ASC.outputVec
+      inputVec2: 1
+
+    ARI_DESC: 
+      type: arithmetic
+      operator: "+"
+      inputVec1: SEL_LEN_DESC.outputVec
+      inputVec2: 1
+      
+    ARI_MIXED: 
+      type: arithmetic
+      operator: "+"
+      inputVec1: SEL_LEN_MIXED.outputVec
+      inputVec2: 1
+
+    STAT_ASC:
+      type: stat
+      measure: "mean"
+      inputVec: ARI_ASC.outputVec
+
+    STAT_DESC:
+      type: stat
+      measure: "mean"
+      inputVec: ARI_DESC.outputVec
+
+    STAT_MIXED:
+      type: stat
+      measure: "mean"
+      inputVec: ARI_MIXED.outputVec
+       
+  sink:
+    f1:
+      type: sink
+      input: STAT_ASC.outputVec
+      label: mean_length_step_ascending
+      doc:
+        type: Real
+        length: 1
+        description: Mean length of ascending step passages.
+    f2:
+      type: sink
+      input: STAT_DESC.outputVec
+      label: mean_length_step_descending
+      doc:
+        type: Real
+        length: 1
+        description: Mean length of descending step passages.
+    f3:
+      type: sink
+      input: STAT_MIXED.outputVec
+      label: mean_length_step
+      doc:
+        type: Real
+        length: 1
+        description: Mean length of step passages (up and down steps).
+   

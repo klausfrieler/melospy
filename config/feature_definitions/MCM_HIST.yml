@@ -1,0 +1,74 @@
+label: Metrical Circle Map Markov Distributions
+description: "Histogram for Metrical Circle Map (N=48) unigrams and bigrams (occurence and transition probabilites). See `this document <http://ismir2007.ismir.net/proceedings/ISMIR2007_p291_frieler.pdf>`_ or `here <http://www.mu-on.org/frieler/docs/frieler_mcm_2007.pdf>`_ for more details."
+category: Meter
+
+feature:
+
+  source:
+    MCM:
+      param: mcm
+      optParam: 48
+      
+  process:
+
+    UNIGRAM:
+      type: id
+      inputVec: MCM.outputVec
+
+    BIGRAM:
+      type: ngram
+      N: 2
+      inputVec: MCM.outputVec
+
+    UNIGRAMHIST:
+      type: hist
+      histogramType: ordinal
+      min: 0
+      max: 47
+      density: True
+      inputVec: UNIGRAM.outputVec
+
+    BIGRAMHIST:
+      type: hist
+      histogramType: nominal
+      density: True
+      inputVec: BIGRAM.outputVec
+
+
+  sink:
+
+    F1:
+      type: sink
+      input: UNIGRAMHIST.bins
+      label: mcm_unigram_values
+      doc:
+        type: Array  of Integer [0:47]
+        length: 48
+        description: Histogram bins (MCM:48 values)
+
+    F2:
+      type: sink
+      input: UNIGRAMHIST.histVec
+      label: mcm_unigram_freqs
+      doc:
+        type: Real [0,1]
+        length: 48
+        description: Histogram bin densities (MCM:48 values)
+
+    F3:
+      type: sink
+      input: BIGRAMHIST.bins
+      label: mcm_bigram_values
+      doc:
+        type: Array  of Integer
+        length: Var
+        description: Histogram bins (all unique MCM bigrams)
+
+    F4:
+      type: sink
+      input: BIGRAMHIST.histVec
+      label: mcm_bigram_freqs
+      doc:
+        type: Real [0,1]
+        length: Var
+        description: Histogram bin densities (all unique MCM bigrams)

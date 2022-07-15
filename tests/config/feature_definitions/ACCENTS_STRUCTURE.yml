@@ -1,0 +1,61 @@
+label: Structural accents (phrases)
+description: Structurally important positions can give rise to accents (and vice versa). Currently, only phrases markers are implemented here.
+category: Accents
+
+feature:
+  source:
+    ACCENT_PHRASBEG:
+      param: accent
+      optParam: phrasbeg
+
+    ACCENT_PHRASEND:
+      param: accent
+      optParam: phrasend
+
+    ACCENT_PHRASBOR:
+      param: accent
+      optParam: phrasbor
+
+
+  process:
+    PHRASBEG:
+      type: id
+      inputVec: ACCENT_PHRASBEG.outputVec
+
+    PHRASEND:
+      type: id
+      inputVec: ACCENT_PHRASEND.outputVec
+
+    PHRASBOR:
+      type: id
+      inputVec: ACCENT_PHRASBOR.outputVec
+
+
+  sink:
+    f0:
+      type: sink
+      input: PHRASBEG.outputVec
+      label: phrasbeg
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of markers for phrase beginnings (if available).
+
+    f1:
+      type: sink
+      input: PHRASEND.outputVec
+      label: phrasend
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of markers for phrase endings (if available).
+
+    f2:
+      type: sink
+      input: PHRASBOR.outputVec
+      label: phrasbor
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of markers for phrase beginning & endings (if available).
+

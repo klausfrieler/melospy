@@ -1,0 +1,172 @@
+label: Microtiming Features
+description: Features related to micro-timing in a solo. 
+category: Rhythm
+
+feature:
+
+  source:
+    NOM_ONSETS:
+      param: nom-onsets
+    ONSETS:
+      param: onset
+    SWING_RATIOS:
+      param: swing-ratios
+      optParam: 3
+    SWING_SHAPES:
+      param: swing-shapes
+      optParam: 3
+    DUMMY:
+      param: pitch
+
+  process:
+    TOTAL_LEN:
+      type: length
+      inputVec: DUMMY.outputVec      
+    BINARY_LEN:
+      type: length
+      inputVec: SWING_RATIOS.outputVec      
+    BIN_SHARE:
+      type: arithmetic
+      inputVec1: BINARY_LEN.outputVec
+      inputVec2: TOTAL_LEN.outputVec
+      operator: "/"
+    MEAN:
+      type: stat 
+      measure: mean
+      inputVec: SWING_RATIOS.outputVec           
+    MEDIAN:
+      type: stat 
+      measure: median
+      inputVec: SWING_RATIOS.outputVec           
+    STD:
+      type: stat 
+      measure: std
+      inputVec: SWING_RATIOS.outputVec           
+    MEAN_SWING_SHAPES:
+      type: stat 
+      measure: mean
+      inputVec: SWING_SHAPES.outputVec           
+    MEDIAN_SWING_SHAPES:
+      type: stat 
+      measure: median
+      inputVec: SWING_SHAPES.outputVec           
+    STD_SWING_SHAPES:
+      type: stat 
+      measure: std
+      inputVec: SWING_SHAPES.outputVec           
+    DIFF_NOM_ONSETS:
+      type: arithmetic
+      operator: "-"
+      inputVec1: ONSETS.outputVec
+      inputVec2: NOM_ONSETS.outputVec
+    ABS_DIFF_NOM_ONSETS:
+      type: abs
+      inputVec: DIFF_NOM_ONSETS.outputVec
+      
+  sink:
+
+    F1:
+      type: sink
+      input: SWING_RATIOS.outputVec
+      label: swing_ratios
+      doc:
+        type: Real
+        length: Var
+        description: 'Swing ratios of beats with a binary sub-division as the ratio duration of the first to the second eighth in a beat. Straight binary eigths have a value of 1 (1:1), whereas triplet eighths get 2 and dotted eighths + sixteenth get 3:1.'
+    F2:
+      type: sink
+      input: MEAN.outputVec
+      label: mean_swing_ratio
+      doc:
+        type: Real
+        length: 1
+        description: Mean value of swing ratios
+    F3:
+      type: sink
+      input: MEDIAN.outputVec
+      label: median_swing_ratio
+      doc:
+        type: Real
+        length: 1
+        description: Median of swing ratios
+    F4:
+      type: sink
+      input: STD.outputVec
+      label: std_swing_ratio
+      doc:
+        type: Real
+        length: 1
+        description: Standard deviation of swing ratio
+    F5:
+      type: sink
+      input: SWING_SHAPES.outputVec
+      label: swing_shapes
+      doc:
+        type: Real
+        length: Var
+        description: 'Swing shapes are the loudness difference between first and second eighth in a beat with binary subdivision.'
+    F6:
+      type: sink
+      input: MEAN_SWING_SHAPES.outputVec
+      label: mean_swing_shape
+      doc:
+        type: Real
+        length: 1
+        description: Mean value of swing shapes
+    F7:
+      type: sink
+      input: MEDIAN_SWING_SHAPES.outputVec
+      label: median_swing_shape
+      doc:
+        type: Real
+        length: 1
+        description: Median of swing shapes
+    F8:
+      type: sink
+      input: STD_SWING_SHAPES.outputVec
+      label: std_swing_shape
+      doc:
+        type: Real
+        length: 1
+        description: Standard deviation of swing shapes
+    F9:
+      type: sink
+      input: BINARY_LEN.outputVec
+      label: number_binary_beats
+      doc:
+        type: Real
+        length: 1
+        description: Number of fully occupied binary beats
+    F10:
+      type: sink
+      input: BIN_SHARE.outputVec
+      label: proportion_binary_beats
+      doc:
+        type: Real
+        length: 1
+        description: Proportion of fully occupied binary beats
+    F11:
+      type: sink
+      input: NOM_ONSETS.outputVec
+      label: nominal_metrical_onsets
+      doc:
+        type: Real
+        length: N
+        description: Nominal metrical onsets according to metrical annotation and beat track
+    F12:
+      type: sink
+      input: DIFF_NOM_ONSETS.outputVec
+      label: diff_nominal_metrical_onsets
+      doc:
+        type: Real
+        length: N
+        description: Difference of onsets to nominal metrical onsets
+    F13:
+      type: sink
+      input: ABS_DIFF_NOM_ONSETS.outputVec
+      label: abs_diff_nominal_metrical_onsets
+      doc:
+        type: Real
+        length: N
+        description: Absolute difference of onsets to nominal metrical onsets
+        

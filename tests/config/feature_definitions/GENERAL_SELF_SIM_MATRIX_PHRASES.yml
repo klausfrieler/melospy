@@ -1,0 +1,58 @@
+label: Self-similarity Matrix of Phrases
+description: Similarity between phrases using edit distance based similarity on pitch values
+category: Structure
+
+feature:
+  source:
+    PITCH:
+      param: pitch
+      #pitchclass
+    PHRASE_ID:
+      param: phrase-ids
+      
+  process:
+
+    # ----------------------------
+    # this is just necessary for intervals !!!!
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+    APPEND:
+      type: append
+      inputVec: DIFF.outputVec
+    # ----------------------------
+    
+    
+    # phrase-ids shall start with 0 for self-similarity matrix computation
+    PHRASE_ID_TO_ZERO:
+      type: arithmetic
+      inputVec1: PHRASE_ID.outputVec
+      inputVec2: 1
+      operator: "-"
+    SSM:
+      type: selfSimilarity 
+      inputVec: APPEND.outputVec
+      groupingVec: PHRASE_ID_TO_ZERO.outputVec
+
+    SSM_THRESH:
+      type: selfSimilarity 
+      inputVec: APPEND.outputVec
+      threshold: 0.6 
+      groupingVec: PHRASE_ID_TO_ZERO.outputVec
+      
+  sink:
+    F1:
+      input: SSM.selfSimilarityMatrix
+      label: ssm
+      doc:
+        type: Real [0,1]
+        length: ":math:`N_P \\times N_P`"
+        description: Interval-based self-similarity matrix of phrases.
+    F2:
+      input: SSM_THRESH.selfSimilarityMatrix
+      label: ssm_thresh
+      doc:
+        type: Real [0,1]
+        length: ":math:`N_P \\times N_P`"
+        description: Thresholded interval-based self-similarity matrix of phrases.
+      

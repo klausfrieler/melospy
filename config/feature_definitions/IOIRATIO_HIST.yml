@@ -1,0 +1,39 @@
+label: IOI Ratios
+description: "Raw vector of IOI ratios as well as IOI ratio classification (**-1**: shorter, **0**: equal, **+1**: longer) using thresholds 1.49 and .81." 
+category: Rhythm
+
+feature:
+
+  source:
+    IOI_RATIO:
+      param: ioi_ratio
+
+    IOI_RATIO_CLASS:
+      param: ioi_ratio
+      optParam: class
+      
+  process:
+    ID:
+      type: id
+      inputVec: IOI_RATIO
+      
+  sink:
+
+    F1:
+      type: sink
+      input: IOI_RATIO.outputVec
+      label: ioi_ratios
+      doc:
+        type: Float
+        length: N-2
+        description: Raw output of IOI ratios 
+
+    F2:
+      type: sink
+      input: IOI_RATIO_CLASS.outputVec
+      label: ioi_ratio_classes
+      doc:
+        type: Integer [-1:1]
+        length: N-2
+        description: Classified IOI ratios 
+

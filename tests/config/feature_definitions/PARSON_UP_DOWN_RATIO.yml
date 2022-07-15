@@ -1,0 +1,64 @@
+label: Parson's Code Up/Down Ratio
+description: Ratio of number of ascending and descending intervals in a melody (ignoring unisones).
+category: Interval
+
+feature:
+  source:
+    PITCH:
+      param: pitch
+      
+  process:
+    DIFF1: 
+      type: diff
+      inputVec: PITCH.outputVec
+    SIGN1:
+      type: sign
+      inputVec: DIFF1.outputVec
+
+    # chain 1: number of ascending intervals		
+    ABS1:
+      type: abs
+      inputVec: DIFF1.outputVec
+    TH1: 
+      type: threshold
+      inputVec: SIGN1.outputVec
+      threshold: 0
+      operator: "gt"      
+    SUM1:
+      type: sum
+      inputVec: TH1.outputVec
+
+    # chain 2: number of descending intervals		
+    SIGN2:
+      type: sign
+      inputVec: DIFF1.outputVec
+    ABS2:
+      type: abs
+      inputVec: DIFF1.outputVec
+    TH2: 
+      type: threshold
+      inputVec: SIGN2.outputVec
+      threshold: 0
+      operator: "lt"
+    SUM2:
+      type: sum
+      inputVec: TH2.outputVec
+
+    #compute ratio
+    ARI1:
+      type: arithmetic
+      inputVec1: SUM1.outputVec
+      inputVec2: SUM2.outputVec
+      operator: "/"
+       
+  sink:
+    F1:
+      type: sink
+      input: ARI1.outputVec
+      label: ratio_ascending_descending
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Ratio of ascending to descending intervals.
+
+

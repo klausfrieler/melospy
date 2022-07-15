@@ -1,0 +1,74 @@
+label: Average Run-length of Chromatic Passages 
+description: Mean run-length of sequences with intervals of size +1 or -1
+category: Sequence/Interval
+
+feature:
+  source:
+    P:
+      param: pitch
+  process:
+    # compute interval 
+    D1: 
+      type: diff
+      inputVec: P.outputVec
+    # run-length
+    RL: 
+      type: runlength
+      inputVec: D1.outputVec
+        
+    # mask with True for segments with intervals of +1 or -1 semitones
+    TH1:
+      type: threshold
+      inputVec: RL.segVal
+      threshold: 1
+      operator: "eq"
+    TH2:
+      type: threshold
+      inputVec: RL.segVal
+      threshold: -1
+      operator: "eq"
+    OR:
+      type: logic
+      inputVec1: TH1.outputVec
+      inputVec2: TH2.outputVec
+      operator: "or"
+    SEL:
+      type: selector
+      inputVec: RL.segLen
+      selectVec: OR.outputVec
+    
+    # find segments with at least 2 intervals
+    TH3:
+      type: threshold
+      inputVec: SEL.outputVec
+      threshold: 2
+      operator: "ge"
+    SEL2:
+      type: selector
+      inputVec: SEL.outputVec
+      selectVec: TH3.outputVec
+        
+    # mean length of chromatic note sequences
+    ARI2: 
+      type: arithmetic
+      operator: "+"
+      inputVec1: SEL2.outputVec
+      inputVec2: 1
+      
+    STAT1:
+      type: stat
+      measure: "mean"
+      inputVec: ARI2.outputVec
+
+       
+  sink:
+    f1:
+      type: sink
+      input: STAT1.outputVec
+      label: mean_length_chromatic_sequences
+      doc:
+        type: Real
+        length: 1
+        description: Mean run-length of chromatic passages.
+      
+   

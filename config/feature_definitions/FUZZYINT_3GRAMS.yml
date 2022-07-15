@@ -1,0 +1,76 @@
+label: Fuzzy Interval Trigrams
+description: "Histogram features for fuzzy intervals (FUZZYINT, also known as refined contour) trigrams: all unique FUZZYINT trigrams and all FUZZYINT trigrams occuring at least twice."
+category: Sequence/Interval
+
+feature:
+
+  source:
+
+    FUZZINT:
+      param: fuzzyinterval
+
+  process:
+
+    NGRAM:
+      type: ngram
+      N: 3
+      inputVec: FUZZINT.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: fuzzyint_trigram_values
+      doc:
+        type: Array  of Integer [-4:4]
+        length: Var
+        description: Histogram bins (all unique FUZZYINT trigrams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: fuzzyint_trigram_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique FUZZYINT trigrams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: fuzzyint_trigram_pattern
+      doc:
+        type: Array  of Integer [-4:4]
+        length: Var
+        description: Histogram bins (all unique FUZZYINT trigrams occuring at least twice)
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: fuzzyint_trigram_pattern_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique FUZZYINT trigrams occuring at least twice)

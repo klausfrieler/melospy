@@ -1,0 +1,77 @@
+label: Inter-onset Interval Class Trigrams
+description: "Histogram features for (absolute) IOI classes (IOICLASS) trigrams: all unique IOICLASS trigrams and all IOICLASS trigrams occuring at least twice. Reference time-span is 0.5s"
+category: Sequence/Rhythm
+
+feature:
+
+  source:
+
+    IOICLASS:
+      param: durclass
+      optParam: abs
+      
+  process:
+
+    NGRAM:
+      type: ngram
+      N: 3
+      inputVec: IOICLASS.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: ioiclass_trigram_values
+      doc:
+        type: String
+        length: Var
+        description: Histogram bins (all unique IOICLASS trigrams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: ioiclass_trigram_hist
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique IOICLASS trigrams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: ioiclass_trigram_pattern
+      doc:
+        type: String
+        length: Var
+        description: Histogram bins (all unique IOICLASS trigrams occuring at least twice)
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: ioiclass_trigram_pattern_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique IOICLASS trigrams occuring at least twice)

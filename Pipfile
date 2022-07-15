@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+matplotlib = "*"
+pandas = "*"
+pillow = "*"
+pydub = "*"
+pyyaml = "*"
+xlrd = "~=1.2"
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+pytest-html = "*"
+pytest-mock = "*"
+pytest-pythonpath = "*"
+
+[requires]
+python_version = "3.9"

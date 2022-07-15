@@ -1,0 +1,213 @@
+label: Duration Class Single Features
+description: "Normalized histogram counts, mode, entropy and Zipf cofficient for distribution if all 5 duration classes (**very short**: -2, **short**: -1, **medium**: 0, **long**: 1, **very long**: 2) in relative and absolute mode. 
+Reference duration is either local beat duration ('relative mode') or 0.5 sec ('absolute mode')"
+category: Rhythm
+
+feature:
+
+  source:
+    DC_ABS:
+      param: durclass
+      optParam: abs
+
+    DC_REL:
+      param: durclass
+      optParam: rel
+      
+  process:
+
+    HIST_ABS:
+      type: hist
+      histogramType: ordinal
+      min: -2
+      max: +2
+      density: True
+      inputVec: DC_ABS.outputVec
+
+    HIST_REL:
+      type: hist
+      histogramType: ordinal
+      min: -2
+      max: +2
+      density: True
+      inputVec: DC_REL.outputVec
+
+    MODE_ABS:
+      type: stat
+      measure: mode
+      inputVec: DC_ABS.outputVec           
+
+    ENTROPY_ABS:
+      type: stat
+      measure: entropy
+      normalizeEntropy: True
+      inputVec: DC_ABS.outputVec           
+
+    ZIPF_ABS:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: DC_ABS.outputVec           
+
+    MODE_REL:
+      type: stat
+      measure: mode
+      inputVec: DC_REL.outputVec           
+
+    ENTROPY_REL:
+      type: stat
+      measure: entropy
+      normalizeEntropy: True
+      inputVec: DC_REL.outputVec           
+
+    ZIPF_REL:
+      type: stat
+      measure: zipf_coefficient
+      inputVec: DC_REL.outputVec           
+       
+  sink:
+
+    F0:
+      type: sink
+      input: HIST_ABS.histVec
+      index: 0
+      label: durclass_abs_hist_01_very_short
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **very short**"
+    F1:
+      type: sink
+      input: HIST_ABS.histVec
+      index: 1
+      label: durclass_abs_hist_02_short
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **short**"
+    F2:
+      type: sink
+      input: HIST_ABS.histVec
+      index: 2
+      label: durclass_abs_hist_03_medium
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **medium**"
+    F3:
+      type: sink
+      input: HIST_ABS.histVec
+      index: 3
+      label: durclass_abs_hist_04_long
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **long**"
+    F4:
+      type: sink
+      input: HIST_ABS.histVec
+      index: 4
+      label: durclass_abs_hist_05_very_long
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **very long**"
+
+    F5:
+      type: sink
+      input: HIST_REL.histVec
+      index: 0
+      label: durclass_rel_hist_01_very_short
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **very short**"
+    F6:
+      type: sink
+      input: HIST_REL.histVec
+      index: 1
+      label: durclass_rel_hist_02_short
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **short**"
+    F7:
+      type: sink
+      input: HIST_REL.histVec
+      index: 2
+      label: durclass_rel_hist_03_medium
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **medium**"
+    F8:
+      type: sink
+      input: HIST_REL.histVec
+      index: 3
+      label: durclass_rel_hist_04_long
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **long**"
+    F9:
+      type: sink
+      input: HIST_REL.histVec
+      index: 4
+      label: durclass_rel_hist_05_very_long
+      doc:
+        type: Real
+        length: 1
+        description: "Relative frequency **very long**"
+
+    F10:
+      type: sink
+      input: MODE_ABS.outputVec
+      label: durclass_abs_mode
+      doc:
+        type: Real
+        length: Var
+        description: "Mode of absolute duration class distributions (can be list)"
+
+    F11:
+      type: sink
+      input: ENTROPY_ABS.outputVec
+      label: durclass_abs_entropy
+      doc:
+        type: Real
+        length: 1
+        description: "Entropy of absolute duration class distributions"
+
+    F12:
+      type: sink
+      input: ENTROPY_ABS.outputVec
+      label: durclass_abs_zipf
+      doc:
+        type: Real
+        length: 1
+        description: "Zipf coefficient of absolute duration class distributions"
+
+    F13:
+      type: sink
+      input: MODE_REL.outputVec
+      label: durclass_rel_mode
+      doc:
+        type: Real
+        length: Var
+        description: "Mode of relative duration class distributions (can be list)"
+
+    F14:
+      type: sink
+      input: ENTROPY_REL.outputVec
+      label: durclass_rel_entropy
+      doc:
+        type: Real
+        length: 1
+        description: "Entropy of relative duration class distributions"
+
+    F15:
+      type: sink
+      input: ENTROPY_REL.outputVec
+      label: durclass_rel_zipf
+      doc:
+        type: Real
+        length: 1
+        description: "Zipf coefficient of relative duration class distributions"

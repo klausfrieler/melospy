@@ -1,0 +1,68 @@
+label: Form Structure of Phrases
+description: Calculates form strings based on self-similarity between phrases using edit distance based on interval and duration classes
+category: Structure
+
+feature:
+  source:
+    PITCH:
+      param: pitch
+    DURCLASS:
+      param: durclass
+    PHRASE_ID:
+      param: phrase-ids
+      
+  process:
+
+    # ----------------------------
+    # this is just necessary for intervals !!!!
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+    APPEND1:
+      type: append
+      inputVec: DIFF.outputVec
+    APPEND2:
+      type: append
+      inputVec: DURCLASS.outputVec
+    # ----------------------------
+    
+    
+    # phrase-ids shall start with 0 for self-similarity matrix computation
+    PHRASE_ID_TO_ZERO:
+      type: arithmetic
+      inputVec1: PHRASE_ID.outputVec
+      inputVec2: 1
+      operator: "-"
+
+    SSM_INT:
+      type: selfSimilarity 
+      inputVec: APPEND1.outputVec
+      outputType: form
+      id-thresh: 0.6
+      var-thresh: 0.6
+      groupingVec: PHRASE_ID_TO_ZERO.outputVec
+
+    SSM_DURCLASS:
+      type: selfSimilarity 
+      inputVec: APPEND2.outputVec
+      outputType: form
+      id-thresh: 0.7
+      var-thresh: 0.7
+      groupingVec: PHRASE_ID_TO_ZERO.outputVec
+
+  sink:
+    F1:
+      input: SSM_INT.selfSimilarityMatrix
+      label: form_by_interval
+      doc:
+        type: String
+        length: 1
+        description: Phrase form structure based on self-similarity matrix of interval edit distances.
+    F2:
+      input: SSM_DURCLASS.selfSimilarityMatrix
+      label: form_by_durclass
+      doc:
+        type: String
+        length: 1
+        description: Phrase form structure based on self-similarity matrix of duration class edit distances.
+      

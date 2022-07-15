@@ -1,0 +1,179 @@
+label: Metrical accents (on/offbeat)
+description: "Metrical accents are one the most fundamental accents. Classically, meter is partly defined as an underlying regular accent structure.  Syncopations are likely 
+to give rise to accents as well, since they violate metrical expectations. Here, on-beat as well as off-beat (i.e., syncopation) accents collected."
+category: Accents
+
+feature:
+  source:
+    ACCENT_BEAT1:
+      param: accent
+      optParam: beat1
+
+    ACCENT_BEAT3:
+      param: accent
+      optParam: beat3
+
+    ACCENT_BEAT13:
+      param: accent
+      optParam: beat13
+
+    ACCENT_BEATALL:
+      param: accent
+      optParam: beatall
+
+    ACCENT_SYNC1:
+      param: accent
+      optParam: sync1
+
+    ACCENT_SYNC3:
+      param: accent
+      optParam: sync3
+
+    ACCENT_SYNC13:
+      param: accent
+      optParam: sync13
+
+    ACCENT_SYNC1234:
+      param: accent
+      optParam: sync1234
+
+    ACCENT_SYNCALL:
+      param: accent
+      optParam: syncall
+
+    ACCENT_SWING:
+      param: accent
+      optParam: swing-markers
+
+
+  process:
+    BEAT1:
+      type: id
+      inputVec: ACCENT_BEAT1.outputVec
+
+    BEAT3:
+      type: id
+      inputVec: ACCENT_BEAT3.outputVec
+
+    BEAT13:
+      type: id
+      inputVec: ACCENT_BEAT13.outputVec
+
+    BEATALL:
+      type: id
+      inputVec: ACCENT_BEATALL.outputVec
+
+    SYNC1:
+      type: id
+      inputVec: ACCENT_SYNC1.outputVec
+
+    SYNC3:
+      type: id
+      inputVec: ACCENT_SYNC3.outputVec
+
+    SYNC13:
+      type: id
+      inputVec: ACCENT_SYNC13.outputVec
+
+    SYNC1234:
+      type: id
+      inputVec: ACCENT_SYNC1234.outputVec
+
+    SYNCALL:
+      type: id
+      inputVec: ACCENT_SYNCALL.outputVec
+
+    SWINGMARKERS:
+      type: id
+      inputVec: ACCENT_SWING.outputVec
+
+  sink:
+    f0:
+      type: sink
+      input: BEAT1.outputVec
+      label: beat1
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on the primary accent (first beat) of a bar.
+
+    f1:
+      type: sink
+      input: BEAT3.outputVec
+      label: beat3
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on the secondary accent of a bar, if present, e.g. in on the 3rd beat in 4/4-measures (hence the name).
+
+    f2:
+      type: sink
+      input: BEAT13.outputVec
+      label: beat13
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on the primary and secondiry accent of a bar.
+
+    f3:
+      type: sink
+      input: BEATALL.outputVec
+      label: beatall
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on all beat positions in a bar.
+
+    f4:
+      type: sink
+      input: SYNC1.outputVec
+      label: sync1
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on all syncopations right before the primary accent in a bar ('anticipated 1').
+
+    f5:
+      type: sink
+      input: SYNC3.outputVec
+      label: sync3
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on all syncopations right before the secondary accent in a bar ('anticipated 3').
+
+    f6:
+      type: sink
+      input: SYNC13.outputVec
+      label: sync13
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on all syncopations right before primary and secondary accents in a bar ('anticipated 1s and 3s').
+
+    f7:
+      type: sink
+      input: SYNC1234.outputVec
+      label: sync1234
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on all syncopations right before all beats in a bar.
+
+    f8:
+      type: sink
+      input: SYNCALL.outputVec
+      label: syncall
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of accents on all syncopations on every sub-beat metrical levels (i.e., excluding half-beat level).
+
+    f9:
+      type: sink
+      input: SWINGMARKERS.outputVec
+      label: swing_markers
+      doc: 
+        type: Integer [0,1]
+        length: N
+        description: Raw vector of structural markers for swing candidates

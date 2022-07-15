@@ -1,0 +1,316 @@
+label: Inter-onset Interval Class Run-lengths
+description: 'Mean run-length of inter-onset interval classes (**very short**: -2, **short**: -1, **medium**: 0, **long**: 1, **very long**: 2). Reference time-span is either local beat duration ("relative mode") or 0.5 sec ("absolute mode")'
+category: Sequence/Rhythm
+
+feature:
+
+  source:
+    IOICLASS_ABS:
+      param: ioiclass
+      optParam: abs
+    IOICLASS_REL:
+      param: ioiclass
+      optParam: rel
+      
+  process:
+
+    RL_ABS:
+      type: runlength
+      inputVec: IOICLASS_ABS.outputVec
+
+    # compute mean segment length of all segments found  
+    STAT_ABS:
+      type: stat
+      measure: "mean"
+      inputVec: RL_ABS.segLen       
+
+    # compute mean segment length of all very short segments found  
+    TH_ABS1:
+      type: threshold
+      inputVec: RL_ABS.segVal
+      operator: "eq"
+      threshold: -2
+    SEL_ABS1: 
+      type: selector 
+      inputVec: RL_ABS.segLen
+      selectVec: TH_ABS1.outputVec
+    STAT_ABS1:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_ABS1.outputVec
+    
+    # compute mean segment length of all short segments found  
+    TH_ABS2:
+      type: threshold
+      inputVec: RL_ABS.segVal
+      operator: "eq"
+      threshold: -1
+    SEL_ABS2: 
+      type: selector 
+      inputVec: RL_ABS.segLen
+      selectVec: TH_ABS2.outputVec
+    STAT_ABS2:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_ABS2.outputVec
+    
+    # compute mean segment length of all medium segments found  
+    TH_ABS3:
+      type: threshold
+      inputVec: RL_ABS.segVal
+      operator: "eq"
+      threshold: 0
+    SEL_ABS3: 
+      type: selector 
+      inputVec: RL_ABS.segLen
+      selectVec: TH_ABS3.outputVec
+    STAT_ABS3:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_ABS3.outputVec
+    
+    # compute mean segment length of all long segments found  
+    TH_ABS4:
+      type: threshold
+      inputVec: RL_ABS.segVal
+      operator: "eq"
+      threshold: 1
+    SEL_ABS4: 
+      type: selector 
+      inputVec: RL_ABS.segLen
+      selectVec: TH_ABS4.outputVec
+    STAT_ABS4:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_ABS4.outputVec
+    
+    # compute mean segment length of all very long segments found  
+    TH_ABS5:
+      type: threshold
+      inputVec: RL_ABS.segVal
+      operator: "eq"
+      threshold: 2
+    SEL_ABS5: 
+      type: selector 
+      inputVec: RL_ABS.segLen
+      selectVec: TH_ABS5.outputVec
+    STAT_ABS5:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_ABS5.outputVec
+
+    RL_REL:
+      type: runlength
+      inputVec: IOICLASS_REL.outputVec
+
+    # compute mean segment length of all segments found  
+    STAT_REL:
+      type: stat
+      measure: "mean"
+      inputVec: RL_REL.segLen       
+
+    # compute mean segment length of all very short segments found  
+    TH_REL1:
+      type: threshold
+      inputVec: RL_REL.segVal
+      operator: "eq"
+      threshold: -2
+    SEL_REL1: 
+      type: selector 
+      inputVec: RL_REL.segLen
+      selectVec: TH_REL1.outputVec
+    STAT_REL1:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_REL1.outputVec
+    
+    # compute mean segment length of all short segments found  
+    TH_REL2:
+      type: threshold
+      inputVec: RL_REL.segVal
+      operator: "eq"
+      threshold: -1
+    SEL_REL2: 
+      type: selector 
+      inputVec: RL_REL.segLen
+      selectVec: TH_REL2.outputVec
+    STAT_REL2:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_REL2.outputVec
+    
+    # compute mean segment length of all medium segments found  
+    TH_REL3:
+      type: threshold
+      inputVec: RL_REL.segVal
+      operator: "eq"
+      threshold: 0
+    SEL_REL3: 
+      type: selector 
+      inputVec: RL_REL.segLen
+      selectVec: TH_REL3.outputVec
+    STAT_REL3:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_REL3.outputVec
+    
+    # compute mean segment length of all long segments found  
+    TH_REL4:
+      type: threshold
+      inputVec: RL_REL.segVal
+      operator: "eq"
+      threshold: 1
+    SEL_REL4: 
+      type: selector 
+      inputVec: RL_REL.segLen
+      selectVec: TH_REL4.outputVec
+    STAT_REL4:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_REL4.outputVec
+    
+    # compute mean segment length of all very long segments found  
+    TH_REL5:
+      type: threshold
+      inputVec: RL_REL.segVal
+      operator: "eq"
+      threshold: 2
+    SEL_REL5: 
+      type: selector 
+      inputVec: RL_REL.segLen
+      selectVec: TH_REL5.outputVec
+    STAT_REL5:
+      type: stat
+      measure: "mean"
+      inputVec: SEL_REL5.outputVec
+
+
+
+  sink:
+
+    F1:
+      type: sink
+      input: STAT_ABS.outputVec
+      label: aic_mean_seg_len
+      doc:
+        type: Real
+        length: 1
+        description: Mean run-length averaged over all classes (absolute mode)
+
+    F2:
+      type: sink
+      input: STAT_ABS1.outputVec
+      label: aic_mean_seg_len_01_very_short
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **very short** events (absolute mode)"
+
+    F3:
+      type: sink
+      input: STAT_ABS2.outputVec
+      label: aic_mean_seg_len_02_short
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **short** events (absolute mode)"
+
+    F4:
+      type: sink
+      input: STAT_ABS3.outputVec
+      label: aic_mean_seg_len_03_medium
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **medium** long events (absolute mode)"
+
+    F5:
+      type: sink
+      input: STAT_ABS4.outputVec
+      label: aic_mean_seg_len_04_long
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **long** events (absolute mode)" 
+
+    F6:
+      type: sink
+      input: STAT_ABS5.outputVec
+      label: aic_mean_seg_len_05_very_long
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **very long** events (absolute mode)"
+
+    F7:
+      type: sink
+      input: RL_ABS.segLen
+      label: aic_seg_len
+      doc:
+        type: Integer
+        length: Var
+        description: Raw vector of run-lengths for all classes (absolute mode)
+
+    F8:
+      type: sink
+      input: STAT_REL.outputVec
+      label: ric_mean_seg_len
+      doc:
+        type: Real
+        length: 1
+        description: Mean run-length averaged over all classes (relative mode)
+
+    F9:
+      type: sink
+      input: STAT_REL1.outputVec
+      label: ric_mean_seg_len_01_very_short
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **very short** events (relative mode)"
+
+    F10:
+      type: sink
+      input: STAT_REL2.outputVec
+      label: ric_mean_seg_len_02_short
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **short** events (relative mode)"
+
+    F11:
+      type: sink
+      input: STAT_REL3.outputVec
+      label: ric_mean_seg_len_03_medium
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **medium** long events (relative mode)"
+
+    F12:
+      type: sink
+      input: STAT_REL4.outputVec
+      label: ric_mean_seg_len_04_long
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **long** events  (relative mode)"
+
+    F13:
+      type: sink
+      input: STAT_REL5.outputVec
+      label: ric_mean_seg_len_05_very_long
+      doc:
+        type: Real
+        length: 1
+        description: "Mean run-length for **very long** events (relative mode)"  
+
+    F14:
+      type: sink
+      input: RL_REL.segLen
+      label: ric_seg_len
+      doc:
+        type: Integer
+        length: Var
+        description: Raw vector of run-lengths for all classes (relative mode)
+

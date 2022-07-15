@@ -1,0 +1,105 @@
+label: Loudness
+description: "Loudness (resp. intensity) related values for single tone events have been extracted from jazz solos by means of sophisticated MIR techniques and are stored in the WJazzD SQLITE 
+database. Currently, five different values are available: Maximum, median and standard deviation of loudness, relative position of loudness peak and temporal centroid. Might not be avaibable for every solo."
+category: Tone Formation
+
+feature:
+  source:
+    LOUDNESS_MAX:
+      param: loudness
+      optParam: max
+
+    LOUDNESS_MED:
+      param: loudness
+      optParam: median
+
+    LOUDNESS_SD:
+      param: loudness
+      optParam: stddev
+
+    LOUDNESS_RELPEAK:
+      param: loudness
+      optParam: rel_peak_pos
+
+    LOUDNESS_CENTROID:
+      param: loudness
+      optParam: temp_centroid
+
+    LOUDNESS_S2B:
+      param: loudness
+      optParam: s2b
+      
+  process:
+    ID1:
+      type: id
+      inputVec: LOUDNESS_MAX.outputVec
+
+    ID2:
+      type: id
+      inputVec: LOUDNESS_MED.outputVec
+
+    ID3:
+      type: id
+      inputVec: LOUDNESS_SD.outputVec
+
+    ID4:
+      type: id
+      inputVec: LOUDNESS_RELPEAK.outputVec
+
+    ID5:
+      type: id
+      inputVec: LOUDNESS_CENTROID.outputVec
+
+    ID6:
+      type: id
+      inputVec: LOUDNESS_S2B.outputVec
+
+      
+  sink:
+    F1:
+      input: ID1.outputVec
+      label: loudness_max
+      doc:
+        type: Float [-120, 0]
+        length: N
+        description: Maximum loudness values per tone.
+
+    F2:
+      input: ID2.outputVec
+      label: loudness_med
+      doc:
+        type: Real [-120, 0]
+        length: N
+        description: Median loudness values per tone.
+
+    F3:
+      input: ID3.outputVec
+      label: loudness_sd
+      doc:
+        type: Real
+        length: N
+        description: Standard deviation of loudness per tone.
+
+    F4:
+      input: ID4.outputVec
+      label: loudness_rel_peak_pos
+      doc:
+        type: Real [0, 1]
+        length: N
+        description: Relative position of maximum loudness value, duration of tone equals 1.
+
+    F5:
+      input: ID5.outputVec
+      label: loudness_temp_cent
+      doc:
+        type: Real [0, 1]
+        length: N
+        description: Normed temporal centroid of loudness curve per tone, duration of tone equals 1.
+    F6:
+      input: ID6.outputVec
+      label: loudness_s2b
+      doc:
+        type: Real 
+        length: N
+        description: Ratio of solo loudness (median) to backing track loudness (median).
+      

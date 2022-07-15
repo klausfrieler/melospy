@@ -1,0 +1,55 @@
+label: Chordal Pitch Distribution
+description: Histogram and raw vector of chordal pitch (CP)
+category: Pitch
+
+feature:
+
+  source:
+    CP:
+      param: chordal-pitch
+      optParam:
+        keepnc: False      
+        base-pitch: 60
+        modulo: 12
+        circle: 2
+        symmetric: False
+                
+  process:
+
+    HIST:
+      type: hist
+      histogramType: ordinal
+      min: -36
+      max: +36
+      density: False
+      inputVec: CP.outputVec
+       
+  sink:
+
+    F1:
+      type: sink
+      input: CP.outputVec
+      label: cp_raw
+      doc:
+        type: Integer [-60:60]
+        length: N
+        description: Raw output (CP values of all melody notes)
+
+    F2:
+      type: sink
+      input: HIST.bins  
+      label: cp_hist_bins
+      doc:
+        type: Integer [-24:24]
+        length: 49
+        description: Histogram bins
+
+    F3:
+      type: sink
+      input: HIST.histVec
+      label: cp_hist_densities
+      doc:
+        type: Real
+        length: 49
+        description: Histogram bin count (absolute frequencies)
+      

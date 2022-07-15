@@ -1,0 +1,76 @@
+label: Tonal Pitch Class Trigrams
+description: "Histogram features for tonal pitch class (TPC) trigrams: all unique TPC trigrams and all TPC trigrams occuring at least twice."
+category: Sequence/Pitch
+
+feature:
+
+  source:
+
+    TPC:
+      param: tonal-pitch-class
+
+  process:
+
+    NGRAM:
+      type: ngram
+      N: 3
+      inputVec: TPC.outputVec
+
+    NGRAMHIST:
+      type: hist
+      histogramType: nominal
+      inputVec: NGRAM.outputVec
+
+    TH1:
+      type: threshold
+      inputVec: NGRAMHIST.histVec
+      threshold: 1
+      operator: "gt"
+
+    SEL1:
+      type: selector
+      inputVec: NGRAMHIST.bins
+      selectVec: TH1.outputVec
+
+    SEL2:
+      type: selector
+      inputVec: NGRAMHIST.histVec
+      selectVec: TH1.outputVec
+
+  sink:
+
+    F1:
+      type: sink
+      input: NGRAMHIST.bins
+      label: tpc_3grams_values
+      doc:
+        type: Array of Integer [0:11]
+        length: Var
+        description: Histogram bins (all unique TPC trigrams)
+
+    F2:
+      type: sink
+      input: NGRAMHIST.histVec
+      label: tpc_3grams_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique TPC trigrams)
+
+    F3:
+      type: sink
+      input: SEL1.outputVec
+      label: tpc_3grams_pattern
+      doc:
+        type: Array of Integer [0:11]
+        length: Var
+        description: Histogram bins (all unique TPC trigrams occuring at least twice)
+
+    F4:
+      type: sink
+      input: SEL2.outputVec
+      label: tpc_3grams_pattern_counts
+      doc:
+        type: Integer
+        length: Var
+        description: Histogram bin count (all unique TPC trigrams occuring at least twice)

@@ -1,0 +1,110 @@
+label: Variability Indices (IOI)
+description: "Normalized pairwise variability index, which measures the mean contrast of adjacents inter-onset intervals. The formula is
+:math:`\\frac{1}{N-1}\\sum_{i=1}^{N-1} 2\\left| \\frac{I_{i+1}-I_{i}}{I_{i+1}+I_{i}}\\right|`. It is the mean of the absolute value of ratios of IOI difference to IOI mean. 
+This index originated in linguistic and is sometimes used by rhythm researchers as a variability measure.
+The coefficient of variation is another common index for variability. It is defined as the ratio of standard deviation and mean. A simple biased estimator is the corresponding ratio of 
+sample standard deviation and sample mean. The coefficient of variation is only sensical for ratio scales, which applies to durations since they only assum positive values. The formula is:
+:math:`c_V = \\frac{\\sigma(I_{i})}{\\mu(I_{i})}`."
+category: Rhythm
+
+feature:
+
+  source:
+    DUR:
+      param: duration
+      
+  process:
+    DIFF:
+      type: diff
+      inputVec: DUR.outputVec
+
+    DURT1:
+      type: truncate
+      inputVec: DUR.outputVec
+      mode: front
+      value: 1
+
+    DURT2:
+      type: truncate
+      inputVec: DUR.outputVec
+      mode: back
+      value: 1
+
+    ELSUM:
+      type: arithmetic
+      inputVec1: DURT1.outputVec
+      inputVec2: DURT2.outputVec
+      operator: "+"
+
+    ELSUM2:
+      type: arithmetic
+      inputVec1: ELSUM.outputVec
+      inputVec2: 2
+      operator: "/"
+          
+    LEN:
+      type: length
+      inputVec: DUR.outputVec
+
+    LEN1:
+      type: arithmetic
+      inputVec1: LEN.outputVec
+      inputVec2: 1
+      operator: "-"
+
+    RATIO:
+      type: arithmetic
+      inputVec1: DIFF.outputVec
+      inputVec2: ELSUM2.outputVec
+      operator: "/"
+
+    ABS:
+      type: abs
+      inputVec: RATIO.outputVec
+
+    SUM:
+      type: sum
+      inputVec: ABS.outputVec
+
+    NPVI:
+      type: arithmetic
+      inputVec1: SUM.outputVec
+      inputVec2: LEN1.outputVec
+      operator: "/"
+
+    MEAN:
+      type: stat
+      measure: "mean"
+      inputVec: DUR.outputVec
+
+    STD:
+      type: stat
+      measure: "std"
+      inputVec: DUR.outputVec
+
+    COFVAR:
+      type: arithmetic          
+      inputVec1: STD.outputVec
+      inputVec2: MEAN.outputVec
+      operator: "/"
+
+  sink:
+
+    F1:
+      type: sink
+      input: NPVI.outputVec
+      label: nPVI_ioi
+      doc:
+        type: Real [0,1]
+        length: 1
+        description: Normalized pairwise variability index
+
+    F2:
+      type: sink
+      input: COFVAR.outputVec
+      label: CV_ioi
+      doc:
+        type: Real
+        length: 1
+        description: Coefficient of variation 
+

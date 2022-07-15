@@ -1,0 +1,48 @@
+label: Tonal Diatonic Pitch Class Distribution
+description: Histogram and raw vector of tonal pitch classes (TDPC)
+category: Pitch
+
+feature:
+
+  source:
+    TDPC:
+      param: tonal-diatonic-pitch-class
+      
+  process:
+
+    HIST:
+      type: hist
+      histogramType: nominal
+      density: False
+      inputVec: TDPC.outputVec
+      fixed-bins: ['1', '2', '3', '4', '5', '6', '7', 'T', 'B', 'L', '<', '>']
+      
+  sink:
+
+    F1:
+      type: sink
+      input: TDPC.outputVec
+      label: tdpc_raw
+      doc:
+        type: Integer
+        length: N
+        description: Raw output of note-wise TDPC values
+
+    F2:
+      type: sink
+      input: HIST.bins  
+      label: tdpc_hist_bins
+      doc:
+        type: String
+        length: 12
+        description: Histogram bins (all unique TDPC values occuring in a melody)
+
+    F3:
+      type: sink
+      input: HIST.histVec
+      label: tdpc_hist_counts
+      doc:
+        type: Integer
+        length: 12
+        description: Histogram bin count values (abs. frequencies)
+      

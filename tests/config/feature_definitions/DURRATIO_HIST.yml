@@ -1,0 +1,39 @@
+label: Duration Ratios
+description: "Raw vector of duration ratios as well as duration ratio classification (**-1**: shorter, **0**: equal, **+1**: longer) using thresholds 1.49 and .81." 
+category: Rhythm
+
+feature:
+
+  source:
+    DUR_RATIO:
+      param: dur_ratio
+
+    DUR_RATIO_CLASS:
+      param: dur_ratio
+      optParam: class
+      
+  process:
+    ID:
+      type: id
+      inputVec: DUR_RATIO
+      
+  sink:
+
+    F1:
+      type: sink
+      input: DUR_RATIO.outputVec
+      label: dur_ratios
+      doc:
+        type: Float
+        length: N-2
+        description: Raw output of duration ratios 
+
+    F2:
+      type: sink
+      input: DUR_RATIO_CLASS.outputVec
+      label: dur_ratio_classes
+      doc:
+        type: Integer [-1:1]
+        length: N-2
+        description: Classified duration ratios 
+

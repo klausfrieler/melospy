@@ -1,0 +1,26 @@
+label: Average Number of Pitch Classes per Phrase
+description: Average number of different pitch classes per phrase.
+category: Pitch
+
+feature:
+  source:
+    PC:
+      param: pitchclass
+      aggregationOver: phrases
+  process:
+
+    UNIQUE:
+      type: unique
+      inputVec: PC.outputVec
+    LEN:
+      type: length
+      inputVec: UNIQUE.outputVec
+  sink:
+    F1:
+      input: LEN.outputVec
+      aggregationMethod: mean
+      label: mean_number_of_unique_pc
+      doc:
+        type: Real [0:11]
+        length: 1
+        description: Average number of different pitch classes per phrase

@@ -1,0 +1,109 @@
+label: Melody Export
+description: Exports melody as lists of onset, duration, pitch, and metrical positions
+category: Auxiliary
+
+
+feature:
+  source:
+    ONSET:
+      param: onset
+    OFFSET:
+      param: offset
+    NORM_ONSET:
+      param: norm_onsets
+    DURATION:
+      param: duration
+    PITCH:
+      param: pitch
+    PHRASEID:
+      param: phrid
+    METER:
+      param: meter
+      
+  process:
+    ID1: 
+      type: id
+      inputVec: ONSET.outputVec
+    ID2: 
+      type: id
+      inputVec: DURATION.outputVec
+    ID3: 
+      type: id
+      inputVec: PITCH.outputVec
+    ID4: 
+      type: id
+      inputVec: METER.outputVec
+    ID5: 
+      type: id
+      inputVec: PHRASEID.outputVec
+    ID6: 
+      type: id
+      inputVec: OFFSET.outputVec
+
+  sink:
+    F1: 
+      input: ID1.outputVec
+      label: onset
+      doc:
+        type: Real 
+        length: N
+        description: Onsets (in seconds) of events
+    F1.1: 
+      input: NORM_ONSET.outputVec
+      label: norm_onset
+      doc:
+        type: Real 
+        length: N
+        description: Normalized onsets [0-1] of events
+    F1.2: 
+      input: ID1.outputVec
+      label: first_onset
+      index: first
+      doc:
+        type: Real 
+        length: 1
+        description: First onset (in seconds) of events
+    F1.3: 
+      input: ID6.outputVec
+      label: last_offset
+      index: last
+      doc:
+        type: Real 
+        length: 1
+        description: Last offset (in seconds) of events
+    F2: 
+      input: ID2.outputVec
+      label: duration
+      doc:
+        type: Real 
+        length: N
+        description: Duration (in seconds) of events
+    F3: 
+      input: ID3.outputVec
+      label: pitch
+      doc:
+        type: Real 
+        length: N
+        description: Raw MIDI pitch values of events
+    F4: 
+      input: ID4.outputVec
+      label: metrical_position
+      doc:
+        type: String
+        length: N
+        description: Metrical positions of events (MP-dot-notation)
+    F5: 
+      input: ID5.outputVec
+      label: phraseid
+      doc:
+        type: String
+        length: Var
+        description: ID of containing phrase
+    F6: 
+      input: ID6.outputVec
+      label: offset
+      doc:
+        type: Real 
+        length: N
+        description: Offsets (in seconds) of events
+      

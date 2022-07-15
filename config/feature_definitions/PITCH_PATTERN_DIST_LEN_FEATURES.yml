@@ -1,0 +1,34 @@
+label: Pitch Pattern Lengths and Distances
+description: Average length and occurence distance between exact pitch patterns. Uses the edit distance based self-similarity matrix alogorithm.
+category: Sequence/Pitch
+
+feature:
+  source:
+    PITCH:
+      param: pitch
+  process:
+    DIFF:
+      type: diff
+      inputVec: PITCH.outputVec
+    PAT: 
+      type: pattern
+      method: similarityMatrix
+      minPatternLength: 3
+      inputVec: DIFF.outputVec
+  sink:
+    F1: 
+      input: PAT.meanPatternLength
+      label: mean_pattern_length
+      doc:
+        type: Real
+        length: 1
+        description: Mean length of exact pitch patterns
+    F2: 
+      input: PAT.meanPatternDistance
+      label: mean_pattern_distance
+      doc:
+        type: Real
+        length: 1
+        description: Mean distance between exact pitch patterns
+
+      

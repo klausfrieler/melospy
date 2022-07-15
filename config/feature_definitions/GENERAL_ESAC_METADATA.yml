@@ -1,0 +1,190 @@
+label: EsAC Metadata
+description: Export all metadata for EsAC tunes
+category: Metadata
+
+feature:
+  source:
+    COLLECTION:
+      param: meta.collection
+    TITLE:
+      param: meta.title
+    REGION:
+      param: meta.region
+    KEY:
+      param: meta.key
+    UNIT:
+      param: meta.unit
+    SIGNATURE:
+      param: meta.signature
+    SOURCE:
+      param: meta.source
+    FUNCTION:
+      param: meta.function
+    COMMENT:
+      param: meta.comment
+    CNR:
+      param: meta.CNR
+    TUNEFAMILY:
+      param: meta.tunefamily
+    TEXT:
+      param: meta.text
+    MELSTRING:
+      param: meta.melstring
+
+
+  process:
+    ID1:
+      type: id
+      inputVec: COLLECTION.outputVec
+
+    ID2:
+      type: id
+      inputVec: TITLE.outputVec
+
+    ID3:
+      type: id
+      inputVec: REGION.outputVec
+
+    ID4:
+      type: id
+      inputVec: KEY.outputVec
+
+    ID5:
+      type: id
+      inputVec: UNIT.outputVec
+
+    ID6:
+      type: id
+      inputVec: SIGNATURE.outputVec
+
+    ID7:
+      type: id
+      inputVec: SOURCE.outputVec
+
+    ID8:
+      type: id
+      inputVec: FUNCTION.outputVec
+
+    ID9:
+      type: id
+      inputVec: COMMENT.outputVec
+
+    ID10:
+      type: id
+      inputVec: CNR.outputVec
+
+    ID11:
+      type: id
+      inputVec: TUNEFAMILY.outputVec
+
+    ID12:
+      type: id
+      inputVec: TEXT.outputVec
+
+    ID13:
+      type: id
+      inputVec: MELSTRING.outputVec
+
+  sink:
+    F1:
+      input: ID1.outputVec
+      label: collection
+      doc:
+        type: String
+        length: 1
+        description: Collection
+    F2:
+      input: ID2.outputVec
+      label: esac_title
+      doc:
+        type: String
+        length: 1
+        description: Orignal EsAC title
+    F3:
+      input: ID3.outputVec
+      label: region
+      doc:
+        type: String
+        length: 1
+        description: Region of origin
+
+
+    F4:
+      input: ID4.outputVec
+      label: esac_key
+      doc:
+        type: String
+        length: 1
+        description: Annotated key (tonic)
+
+    F5:
+      input: ID5.outputVec
+      label: unit
+      doc:
+        type: Integer (2,4,8,16,32)
+        length: 1
+        description: Annotated minimal rhythmic unit
+
+    F6:
+      input: ID6.outputVec
+      label: signature
+      doc:
+        type: String
+        length: 1
+        description: Annotated signature (possible more than one, space separate,  or FREE)
+
+    F7:
+      input: ID7.outputVec
+      label: source
+      doc:
+        type: String
+        length: 1
+        description: Annotated key (tonic)
+
+    F8:
+      input: ID8.outputVec
+      label: function
+      doc:
+        type: String
+        length: 1
+        description: Annotated (ritual) function
+
+    F9:
+      input: ID9.outputVec
+      label: comment
+      doc:
+        type: String
+        length: 1
+        description: Comment section
+
+    F10:
+      input: ID10.outputVec
+      label: cnr
+      doc:
+        type: String
+        length: 1
+        description: CNR section (with yet unknown meaning!)
+
+    F11:
+      input: ID11.outputVec
+      label: tunefamily
+      doc:
+        type: String
+        length: 1
+        description: Tunefamily based on EsAC-Ids
+
+    F12:
+      input: ID12.outputVec
+      label: text
+      doc:
+        type: String
+        length: 1
+        description: Annotated lyrics
+    F13:
+      input: ID13.outputVec
+      label: melstring
+      doc:
+        type: String
+        length: 1
+        description: Original melody code.
+
