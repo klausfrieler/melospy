@@ -1,3 +1,5 @@
+# MeloSpy Library for the Analysis of Melodies
+
 This is a reduced copy of the development branch of the MeloSpy 
 Python library by the Jazzomat project, minus some tools and some test data. 
 This repository is mainly for reference and forks, no pull requests will be 
